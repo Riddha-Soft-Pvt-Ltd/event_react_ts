@@ -1,3 +1,8 @@
+//import component
+import Facility from './pages/facilities/Facility';
+import Dashboard from './pages/dashboard/Dashboard';
+import Login from './pages/login/Login';
+
 //mui section
 import {Box} from '@mui/material'
 
@@ -5,11 +10,22 @@ import {Box} from '@mui/material'
 import { Route , Routes } from "react-router-dom";
 
 
+
+
+
+
+
 const Router = () =>{
     return(
         <Box sx={{padding: "40px 20px 10px 20px"}}>
-            Hello
+            <Routes>
+                <Route path='/' element={<Dashboard/>}/>
+                <Route path='/dashboard' element={<Dashboard/>}/>
+                <Route path='customers' element={<Facility/>}/>
+                <Route path='/login' element={<Login/>}/>
+            </Routes>
         </Box>
     )
 }
 
+export default Router
