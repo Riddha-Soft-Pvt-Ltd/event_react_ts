@@ -5,13 +5,8 @@ import Cookies from "universal-cookie";
 import styled from 'styled-components';
 //Mui Icons
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import BarChartIcon from '@mui/icons-material/BarChart';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import HttpsIcon from '@mui/icons-material/Https';
-import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
 import LogoutIcon from '@mui/icons-material/Logout';
-import SettingsIcon from '@mui/icons-material/Settings';
-//Mui Icons
 
 
 
@@ -23,12 +18,13 @@ const StyledLink = styled(Link)`
     padding: ${(props:any):string => props.small? '5px 20px': '20px opx'};
     width: 100%;
     text-decoration: none;
-    background: ${(props:any):string => props.selected ? 'rgba(49, 80, 161, 0.2)': 'none' };
+    background: ${(props:any):string => props.selected ? 'rgba(173, 231, 146,0.3)': 'none' };
+    color:${(props:any):string => props.selected ? '#54B435': 'none' };
     margin-top: 5px;
-    color: black;
+    
     border-radius: 5px;
     &:hover {
-        background: ${(props:any):string => props.selected? '#D1D1D1': (props.type === "bottom") ? '#E5E5E5': '#FBDDDD'};
+        background: ${(props:any):string => props.selected? 'rgb(173, 231, 146)': (props.type === "bottom") ? '#E5E5E5': '#FBDDDD'};
     }
     &:active {
         background: #BFBCBC;
@@ -83,8 +79,8 @@ const Sidebar = () => {
                 <Box sx={{display: "flex", justifyContent: "center", alignItems:"center", gap: "10px"}}>
                     <img src='https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA' alt="locker" style={{width: "30px", height:"30px"}} />
                     <Typography variant="h5" component="h2">
-                        Locker{" "}
-                        <Typography variant="h5" component="span" sx={{color: "#3150A1"}}>System</Typography>
+                        {" "}
+                        <Typography variant="h5" component="span" sx={{color: "#3C2A21"}}>CAN</Typography>
                     </Typography>
                 </Box>
 
@@ -121,8 +117,8 @@ const NavigationOptions = () => {
     }, [location]);
     return(
         <List sx={{width: "100%", padding:"0 10px"}}>
-            <CustomListItem link="dashboard" path={path} icon={<DashboardIcon/>} label="Dashboard" />
-            <CustomListItem link="customers" path={path} icon={<PeopleAltIcon/>} label="Customers" />          
+            <CustomListItem link="dashboard" path={path} icon={<DashboardIcon />} label="Dashboard" />
+            <CustomListItem link="customers" path={path} icon={<PeopleAltIcon />} label="Facilties" />          
         </List>
     )
 }
@@ -132,6 +128,7 @@ const NavigationOptions = () => {
  * @params none
  * @returns JSX.Element contains user session handeling options
  */
+
 const BottomSection = () => {
     const navigate = useNavigate();
     const handleOnLogout = () => {
@@ -143,10 +140,10 @@ const BottomSection = () => {
         <UserInfo>
             <StyledLink to="/" type="bottom">
                 <Avatar alt="Profile" src='https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA' sx={{width: 46, height: 46, border: "2px solid rgba(0,0,0,0.7)"}}/>
-                <Typography component="span" sx={{fontSize: '20px'}}>LAlu JaDaV</Typography>
+                <Typography component="span" sx={{fontSize: '20px'}}>Admin</Typography>
             </StyledLink>
 
-            <Box sx={{display: "flex", flexDirection: "column", gap: "2px", width: "100%"}}>
+            <Box sx={{display: "flex", flexDirection: "column", width: "100%",marginBottom:'35px'}}>
                 
                 <StyledButton onClick={handleOnLogout}>
                     <LogoutIcon/>
@@ -174,7 +171,7 @@ const CustomListItem = ({label, link, path, icon}: {label:string , link:string, 
                     {icon}
                 </Avatar>
             </ListItemAvatar>
-            <Typography sx={{fontSize: "18px", fontWeight: "400"}}>{label}</Typography>
+            <Typography sx={{fontSize: "25px", fontWeight: "500",margin:'10px 0'}}>{label}</Typography>
         </StyledLink>
     )
 }

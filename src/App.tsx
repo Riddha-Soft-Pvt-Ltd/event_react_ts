@@ -2,12 +2,13 @@
 import { Box, Container, Typography } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
 
-//styled component 
+
 import styled from 'styled-components'
 import Layout from './components/layout/Layout';
+import Login from './pages/login/Login';
 
 
-
+//styled component 
 const AppContainer = styled(Box)`
 width:100%;
 `
@@ -15,10 +16,11 @@ width:100%;
 function App() {
   return (
     <AppContainer>
-     
-        <Layout />
-      
-    </AppContainer>
+      <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route path='/*' element={<Layout />} />
+      </Routes>
+     </AppContainer>
   );
 }
 
