@@ -72,7 +72,7 @@ export default function FormSection() {
                         alignItems: 'center',
                         gap:'10px',
                         padding: '30px',
-                        background: 'rgb(239, 255, 253,0.8)',
+                        background: 'rgb(239, 255, 253,0.95)',
                         borderRadius: "5px"
                     }}
                 >

@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import AodIcon from '@mui/icons-material/Aod';
 
 
 
@@ -119,6 +121,8 @@ const NavigationOptions = () => {
         <List sx={{width: "100%", padding:"0 10px"}}>
             <CustomListItem link="dashboard" path={path} icon={<DashboardIcon />} label="Dashboard" />
             <CustomListItem link="customers" path={path} icon={<PeopleAltIcon />} label="Facilties" />          
+            <CustomListItem link="vistor/checkin" path={path} icon={<CheckCircleOutlineIcon />} label="CheckIn/CheckOut" />          
+            <CustomListItem link="vistor/facility" path={path} icon={<AodIcon />} label="Check Facilities" />          
         </List>
     )
 }
@@ -171,7 +175,7 @@ const CustomListItem = ({label, link, path, icon}: {label:string , link:string, 
                     {icon}
                 </Avatar>
             </ListItemAvatar>
-            <Typography sx={{fontSize: "25px", fontWeight: "500",margin:'10px 0'}}>{label}</Typography>
+            <Typography sx={{fontSize: "21px", fontWeight: "500",margin:'10px 0'}}>{label}</Typography>
         </StyledLink>
     )
 }
