@@ -1,8 +1,10 @@
-import { Button, Typography, Box, Grid, List, ListItem, ListItemText, Stack, TextField } from '@mui/material'
-import { textAlign } from '@mui/system';
+import { Button, Typography, Box, Grid, List, ListItem, ListItemText, Stack, TextField, IconButton } from '@mui/material'
 import React, { useState } from 'react'
 import styled from 'styled-components';
 
+//mui icons
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 const BoxStyle = styled(Box)`
 
@@ -28,24 +30,20 @@ const Facility = () => {
           <Grid item xs={6}>
             <Typography sx={{ margin: '10px 0 0 15px', fontSize: '24px' }}>Available Facilites</Typography>
             <List>
-              <ListItem>
-                <ListItemText secondary='Breakfast' />
+              <ListItem
+               secondaryAction={
+                <>
+                <IconButton edge="start" aria-label="delete">
+                  <DeleteIcon />
+                </IconButton>
+                <IconButton edge="end" aria-label="edit">
+                  <EditIcon/>
+                </IconButton>
+                </>
+              }>
+                <ListItemText primary='Breakfast' />
               </ListItem>
-              <ListItem>
-                <ListItemText secondary='Lunch' />
-              </ListItem>
-              <ListItem>
-                <ListItemText secondary='Tea' />
-              </ListItem>
-              <ListItem>
-                <ListItemText secondary='Coffee' />
-              </ListItem>
-              <ListItem>
-                <ListItemText secondary='Dinner' />
-              </ListItem>
-              <ListItem>
-                <ListItemText secondary='Snacks' />
-              </ListItem>
+              
 
             </List>
           </Grid>
