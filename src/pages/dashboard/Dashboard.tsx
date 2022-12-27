@@ -6,6 +6,7 @@ import CardholderTable from './CardholderTable';
 import NewCardholderModal from './NewCardholderModal';
 import { httpGetVisitors } from '../../http/visitors';
 import TableSeamer from '../../components/loader/TableSeamer';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { textAlign } from '@mui/system';
 import CardModel from '../../components/Modal/CardModel';
 
@@ -39,7 +40,6 @@ const Dashboard = () => {
   const [loadMore, setLoadMore] = useState(false);
 
   const getAllVisitors = async (skip: number, take: number) => {
-    console.log(skip, take);
     const visitorsData = await httpGetVisitors(skip, take);
     setVisitors([...visitors, ...visitorsData]);
     setLoading(false);
@@ -76,12 +76,12 @@ const Dashboard = () => {
         <NewCardholderModal open={open} setOpen={setOpen} getAllVisitors={() => getAllVisitors(0, 10)} />
         {loading ? <TableSeamer /> : <CardholderTable visitors={visitors} modelOpen={modelOpen} setModelOpen={setModelOpen} />}
         {loadMore ? (<Box sx={{ display: "flex", justifyContent: "center" }}><CircularProgress /></Box>) :
-          <button onClick={() => {
+          <button style={{ border: 0, margin: "5px", backgroundColor: "white", display: "flex", alignItems: "center", justifyContent: "center" }} onClick={() => {
             setLoadMore(true);
             setSkipTake({ skip: skipTake.skip + 10, take: skipTake.take });
             getAllVisitors(skipTake.skip + 10, skipTake.take);
           }}>
-            load more
+            Load more <ExpandMoreIcon />
           </button>}
       </BoxStyle>
     </>
