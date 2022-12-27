@@ -8,6 +8,7 @@ export const getVisitors = (skip: string | number, take: string | number) =>
   BaseUrl + `visitor/get-all?skip=${skip}&take=${take}`;
 export const deleteVisitors = BaseUrl + "";
 export const editVisitors = BaseUrl + "";
+export const searchVisitors = (search: string) => BaseUrl + `visitor/search?name=${search}`;
 
 export const saveFacilities = BaseUrl + "facility/create";
 export const getFacilities = BaseUrl + "facility/get-all";
