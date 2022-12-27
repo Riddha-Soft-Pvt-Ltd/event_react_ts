@@ -73,7 +73,7 @@ const Dashboard = () => {
             </Box>
           </Grid>
         </Grid>
-        <NewCardholderModal open={open} setOpen={setOpen} />
+        <NewCardholderModal open={open} setOpen={setOpen} getAllVisitors={() => getAllVisitors(0, 10)} />
         {loading ? <TableSeamer /> : <CardholderTable visitors={visitors} modelOpen={modelOpen} setModelOpen={setModelOpen} />}
         {loadMore ? (<Box sx={{ display: "flex", justifyContent: "center" }}><CircularProgress /></Box>) :
           <button onClick={() => {
