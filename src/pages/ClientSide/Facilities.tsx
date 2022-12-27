@@ -1,15 +1,12 @@
 import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SideImage2 from '../../assets/images/SideImage2.png';
 import Lottie from "lottie-react";
 import Scanner from '../../assets/scanner.json'
-import { Link } from 'react-router-dom';
 //mui icons
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-
-
-
+import { GoBack } from './Check_In_Out';
+import { httpGetFacilities } from '../../http/facilities';
 
 const BoxContainer = styled(Box)`
 height:100%;
@@ -23,32 +20,36 @@ background-position:center;
 const Facilities = () => {
     const [value, setValue] = useState('');
     const [content, setContent] = useState<any>('');
+    const [facilities, setFacilities] = useState([]);
+
+
     const handleChange = (event: any) => {
         setValue(event.target.value as string);
     };
 
-    console.log(content);
-       
+    const getFacilities = async () => {
+        const data = await httpGetFacilities();
+        setFacilities(data);
+    }
+
+    useEffect(() => {
+        getFacilities();
+        return () => {
+        }
+    }, [])
+
+
     return (
-        <>
+        <div onClick={() => { }}>
             <Grid container>
-                <Grid item xs={7}>
-                <Link to={'/dashboard'} style={{ textDecoration: 'none' }} >
-                        <Stack direction={'row'} alignItems='center'>
-                            <KeyboardBackspaceIcon color={'primary'}  />
-                            <Typography variant='h5' color={'primary'} sx={{ padding: '10px' }}>Go Back</Typography>
-                        </Stack>
-                    </Link>
-                   <BoxContainer/>
-                </Grid>
-                <Grid item xs={5} sx={{background:'#F4FAFF'}}>
-                   
+                <GoBack />
+                <Grid item xs={12} sx={{ background: '#F4FAFF' }}>
                     <Stack sx={{ height: '100vh' }} justifyContent='center' alignItems={'center'} spacing={4}>
-                        <Typography variant='body2' sx={{fontWeight:400,fontSize:'32px'}}>Check Facility</Typography>
-                        <Lottie style={{width:'250px',height:'250px'}} animationData={Scanner} loop={true}/>
+                        <Typography variant='body2' sx={{ fontWeight: 400, fontSize: '32px' }}>Check Facility</Typography>
+                        <Lottie style={{ width: '250px', height: '250px' }} animationData={Scanner} loop={true} />
                         {/* Dropdown component  */}
-                        <Typography  variant={'h3'} textAlign={'center'}>Scan your Card </Typography>
-                        <FormControl sx={{ width: '50%' }}>
+                        <Typography variant={'h3'} textAlign={'center'}>Scan your Card </Typography>
+                        <FormControl sx={{ width: '20%' }}>
                             <InputLabel id="check">Choose Facility</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
@@ -57,7 +58,9 @@ const Facilities = () => {
                                 onChange={handleChange}
                                 label='Choose Facility'
                             >
-                                <MenuItem value={1}>In</MenuItem>
+                                {facilities.map((facility: any, index) => {
+                                    return <MenuItem key={index} value={facility._id}>{facility.name}</MenuItem>
+                                })}
                                 <MenuItem value={2}>Out</MenuItem>
                             </Select>
                         </FormControl>
@@ -68,9 +71,7 @@ const Facilities = () => {
                     </Stack>
                 </Grid>
             </Grid>
-
-
-        </>
+        </div>
     )
 }
 

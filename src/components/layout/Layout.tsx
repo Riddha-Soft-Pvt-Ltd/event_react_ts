@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Sidebar from './Sidebar';
 import Router from '../../router';
 
-
 // Styled Component
 const ContainerBox = styled(Box)`
     height: 100%;
@@ -33,13 +32,13 @@ const SideBarContainer = styled(Box)`
  * @returns JSX.Element the Layout structure of the App ( UI after the user Logs in )
  */
 const Layout = () => {
-    return(
+    return (
         <ContainerBox>
             <SideBarContainer>
-                <Sidebar/>
+                <Sidebar />
             </SideBarContainer>
-            <Box sx={{marginLeft: "355px", minHeight: "100vh", overflowX: "auto", marginRight: "5px"}}>
-                <Router/>
+            <Box sx={{ marginLeft: "355px", minHeight: "100vh", overflowX: "auto", marginRight: "5px" }}>
+                <Router />
             </Box>
         </ContainerBox>
     )
