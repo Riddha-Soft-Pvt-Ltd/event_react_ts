@@ -28,7 +28,16 @@ export const httpSaveFacilities = async (data: any) => {
     return success;
 };
 
-export const httpEditFacilities = (data: any) => axios.post(editFacilities, data);
+export const httpEditFacilities = async(id: string,data:any) => {
+    let success = false;
+    await axios.post(editFacilities(id),data, { headers: customHeader }).then((response) => {
+        if (response && response.data && response.data.success) {
+            success = response.data.success;
+        }
+        return success = response.data.success;
+    }).catch((err) => { success = false })
+    return success;
+}
 
 export const httpDeleteFacilities = async (id: string) => {
     let success = false;
