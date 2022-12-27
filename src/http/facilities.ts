@@ -1,9 +1,10 @@
 import axios from "axios";
+import { customHeader } from "../utils/token.utils";
 import { deleteFacilities, editFacilities, getFacilities, saveFacilities } from "./endpoints/endpoints";
 
-export const customHeader = {
-    "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNlb0BnbWFpbC5jb20iLCJpYXQiOjE2NzIwNjgyMTh9.bNjdyXeK-sypehzObx0Yh_UdM0jfH-H88scpC733q54`
-}
+// export const customHeader = {
+//     "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNlb0BnbWFpbC5jb20iLCJpYXQiOjE2NzIwNjgyMTh9.bNjdyXeK-sypehzObx0Yh_UdM0jfH-H88scpC733q54`
+// }
 
 export const httpGetFacilities = async () => {
     let facilities: never[] = []

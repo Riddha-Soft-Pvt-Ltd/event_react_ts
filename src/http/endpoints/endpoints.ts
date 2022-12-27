@@ -1,9 +1,9 @@
-export const BaseUrl = "http://192.168.20.103:8002/";
+export const BaseUrl = "http://192.168.40.2:8002/";
 
 
 export const adminLoginUrl = BaseUrl + 'admin/auth/login';
 
-export const saveVisitors = BaseUrl + '';
+export const saveVisitors = BaseUrl + 'visitor/register';
 export const getVisitors = (skip: string | number, take: string | number) => BaseUrl + `visitor/get-all?skip=${skip}&take=${take}`;
 export const deleteVisitors = BaseUrl + '';
 export const editVisitors = BaseUrl + '';

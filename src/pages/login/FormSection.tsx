@@ -34,7 +34,6 @@ export default function FormSection() {
             password: data.password,
         })
             .then(function (response) {
-                console.log(response);
                 if (response.data.success === true) {
                     const cookie = new Cookies();
                     cookie.set("isLoggedIn", "true", { maxAge: 36000 }); // 60 minutes 3600s

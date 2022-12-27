@@ -2,9 +2,14 @@ import { Box, Button, Modal, Stack, TextField, Typography } from "@mui/material"
 import { useCallback, useState, useEffect, useContext } from "react";
 import styled from 'styled-components'
 import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 //tosify
 import { toast } from 'react-toastify';
+import { newVisitorSchema } from "../../utils/YupSchema";
+import { getVisitors, saveVisitors } from "../../http/endpoints/endpoints";
+import axios from "axios";
+import { customHeader } from "../../utils/token.utils";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -28,7 +33,7 @@ padding: 0px;
 gap: 24px;
 margin-top:20px;
 `
-const NewCardholderModal = ({ open, setOpen }: { open: boolean, setOpen: (value: boolean) => void }) => {
+const NewCardholderModal = ({ open, setOpen,getAllVisitors}: { open: boolean, setOpen: (value: boolean) => void,getAllVisitors:any }) => {
     const handleClose = () => {
         setOpen(false);
     }
@@ -40,6 +45,14 @@ const NewCardholderModal = ({ open, setOpen }: { open: boolean, setOpen: (value:
         handleSubmit,
         formState: { errors },
     } = useForm({
+        resolver: yupResolver(newVisitorSchema),
+        defaultValues: {
+            designation: '',
+            contact: '',
+            email: '',
+            name: '',
+            clubName: '',
+        }
     });
 
 
@@ -47,23 +60,21 @@ const NewCardholderModal = ({ open, setOpen }: { open: boolean, setOpen: (value:
     const onSubmit: (data: any) => void = (data) => {
 
         console.log(data);
-        // handleClose();
+        axios.post(saveVisitors.toString(),
+            data
+            , { headers: customHeader })
+            .then((resp) => {
+                getAllVisitors();
+                toast.success('New Cardholder Added');
 
-        // const details = { ...data, photo: pic };
-        // axios.post(endPoints.addNewCustomerUrl.toString(), {
-        //     ...data
-        // })
-        // .then((resp) => {
-        //     getCardHolderData();
-        //     toast.success('New Cardholder Added');
-
-        // })
-        // .catch((error) => {
-        //     toast.error('Error while creating new user')
-        // })
-        // .finally(() => {
-        //     handleClose();
-        // })
+            })
+            .catch((error) => {
+                console.log(error)
+                toast.error('Error while creating new user')
+            })
+            .finally(() => {
+                handleClose();
+            })
 
     }
 
@@ -130,12 +141,33 @@ const PersonalForm = ({ register, control, errors }: { register: any, control: a
                                 id="designation"
                                 onChange={onChange}
                                 value={value}
-                                error={errors.password && Boolean(errors.password.message)}
-                                helperText={errors.password ? `${errors.password.message}` : ""}
+                                error={errors.designation && Boolean(errors.designation.message)}
+                                helperText={errors.designation ? `${errors.designation.message}` : ""}
                             />
                         </>
                     )}
                 />
+                <Controller
+                    name="clubName"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <>
+
+                            <TextField
+                                label='Club Name'
+                                type={'text'}
+                                sx={{ width: '50%' }}
+
+                                id="clubName"
+                                onChange={onChange}
+                                value={value}
+                                error={errors.clubName && Boolean(errors.clubName.message)}
+                                helperText={errors.clubName ? `${errors.clubName.message}` : ""}
+                            />
+                        </>
+                    )}
+                />
+
             </Stack>
 
 
@@ -203,8 +235,8 @@ const ContactForm = ({ register, control, errors }: { register: any, control: an
                                 id="contact"
                                 onChange={onChange}
                                 value={value}
-                                error={errors.password && Boolean(errors.password.message)}
-                                helperText={errors.password ? `${errors.password.message}` : ""}
+                                error={errors.contact && Boolean(errors.contact.message)}
+                                helperText={errors.contact ? `${errors.contact.message}` : ""}
                             />
                         </>
                     )}
@@ -228,7 +260,7 @@ const ContactForm = ({ register, control, errors }: { register: any, control: an
                         </>
                     )}
                 />
-                <Controller
+                {/* <Controller
                     name="address"
                     control={control}
                     render={({ field: { onChange, value } }) => (
@@ -241,12 +273,12 @@ const ContactForm = ({ register, control, errors }: { register: any, control: an
                                 id="address"
                                 onChange={onChange}
                                 value={value}
-                                error={errors.email && Boolean(errors.email.message)}
-                                helperText={errors.email ? `${errors.email.message}` : ""}
+                                error={errors.address && Boolean(errors.address.message)}
+                                helperText={errors.address ? `${errors.address.message}` : ""}
                             />
                         </>
                     )}
-                />
+                /> */}
 
 
 
