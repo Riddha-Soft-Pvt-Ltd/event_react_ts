@@ -1,4 +1,4 @@
-export const BaseUrl = "http://192.168.1.82:8002/";
+export const BaseUrl = "http://192.168.20.61:8002/";
 
 
 export const adminLoginUrl = BaseUrl + 'admin/auth/login';
