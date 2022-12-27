@@ -69,7 +69,7 @@ const Check_In_Out = () => {
                             </Select>
                         </FormControl>
 
-                        <TextField   sx={{ width: '30%' }}  autoFocus onKeyDown={(event) => {
+                        <TextField sx={{ width: '30%' }} autoFocus onKeyDown={(event) => {
                             if (event.key === "Enter") {
                                 (value === "1") ? visitorsGateCheckIn() : visitorsGateCheckOut()
                             }
