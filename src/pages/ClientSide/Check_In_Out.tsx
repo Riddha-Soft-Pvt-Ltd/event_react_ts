@@ -1,23 +1,49 @@
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Box, FormControl, Grid, Input, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import React, { useCallback, useRef, useState } from 'react';
 import Lottie from "lottie-react";
 import Scanner from '../../assets/scanner.json'
 import { Link } from 'react-router-dom';
+import MessageModal from '../../components/Modal/MessageModal';
 
 //mui icons
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { httpVisitorFacilitiesCheckIn, httpVisitorFacilitiesCheckOut } from '../../http/checkInCheckOut';
 
 const Check_In_Out = () => {
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState("1");
     const [focus, setFocus] = useState(true);
-    const [content, setContent] = useState<any>('');
-    const emailInput = useRef<HTMLInputElement | null>(null);
-
+    const [data, setdata] = useState<any>('');
+    const [responseData, setresponse] = useState('')
+    const [modelOpen, setmodelOpen] = useState(false)
+    console.log(responseData)
     const handleChange = (event: any) => {
         setFocus(false);
         setValue(event.target.value as string);
         setFocus(true);
     };
+
+    if (modelOpen) {
+        return (
+            <MessageModal modelOpen={modelOpen} setmodelOpen={setmodelOpen} responseData={responseData} />
+        )
+    }
+
+    const visitorsGateCheckIn = async () => {
+        const response = await httpVisitorFacilitiesCheckIn({ visitorId: data });
+        setresponse(response)
+        if (response) {
+            setmodelOpen(true)
+        }
+    }
+
+    const visitorsGateCheckOut = async () => {
+        const response = await httpVisitorFacilitiesCheckOut({ visitorId: data });
+        setresponse(response)
+
+        if (response) {
+            setmodelOpen(true)
+        }
+    }
 
     return (
         <>
@@ -42,9 +68,12 @@ const Check_In_Out = () => {
                                 <MenuItem value={2}>Out</MenuItem>
                             </Select>
                         </FormControl>
-                        <TextField ref={emailInput} value={content} label='Scan your Card' autoFocus={focus} onChange={(e) => {
-                            setContent(e.target.value);
-                        }} />
+
+                        <TextField   sx={{ width: '30%' }}  autoFocus onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                                (value === "1") ? visitorsGateCheckIn() : visitorsGateCheckOut()
+                            }
+                        }} onChange={(e) => setdata(e.target.value)} />
                     </Stack>
                 </Grid>
             </Grid>

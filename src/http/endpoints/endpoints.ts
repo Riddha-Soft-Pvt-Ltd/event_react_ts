@@ -14,7 +14,10 @@ export const getFacilities = BaseUrl + "facility/get-all";
 export const deleteFacilities = (id: string) =>
   BaseUrl + `facility/delete?id=${id}`;
 export const editFacilities = (id: string) =>
-BaseUrl + `facility/update?id=${id}`;
+  BaseUrl + `facility/update?id=${id}`;
 
 export const visitorsCheckInCheckOut = BaseUrl + "";
 export const visitorsFacilityCheckInCheckOut = BaseUrl + "";
+
+export const checkin = BaseUrl + "gate-checkin/check-in";
+export const checkout = BaseUrl + "gate-checkin/check-out";
