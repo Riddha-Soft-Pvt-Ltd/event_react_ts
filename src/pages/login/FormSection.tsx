@@ -3,7 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -15,6 +14,7 @@ import {Controller , useForm} from 'react-hook-form'
 import Cookies from 'universal-cookie'
 import axios from 'axios';
 import {toast} from 'react-toastify';
+import { adminLoginUrl } from '../../http/endpoints/endpoints';
 
 const theme = createTheme();
 
@@ -29,32 +29,30 @@ export default function FormSection() {
       formState: { errors },
     } = useForm();
     const onSubmit: (data: any) => void = (data) =>  {
-        console.log(data);
-        navigate('/');
+       
         
-        // axios.post(endPoints.loginUrl.toString(), {
-        //     email: data.email,
-        //     password: data.password,
-        //   })
-        //   .then(function (response) {
-        //     console.log(response);
-        //     if(response.request.status === 200 && response.request.statusText === "OK") {
-        //         const cookie = new Cookies();
-        //         cookie.set("isLoggedIn", "true", { maxAge: 36000 }); // 60 minutes 3600s
-        //         cookie.set('token', response.data.data.token)
-        //         navigate("/");
-        //         toast.success('Login successfully')
-        //        }
-        //        else {
-        //         toast.error('Invalid username and password');
-        //        }
+        axios.post(adminLoginUrl.toString(), {
+            email: data.email,
+            password: data.password,
+          })
+          .then(function (response) {
+            if(response.data.success === true ) {
+                const cookie = new Cookies();
+                cookie.set("isLoggedIn", "true", { maxAge: 36000 }); // 60 minutes 3600s
+                cookie.set('token', response.data.data.token)
+                navigate("/");
+                toast.success('Login successfully')
+               }
+               else {
+                toast.error('Invalid username and password');
+               }
                 
              
-        //   })
+          })
         
-        //   .catch(function (error) {
-        //     toast.error('Invalid username and password');
-        //   });
+          .catch(function (error) {
+            toast.error('Invalid username and password');
+          });
        
       
   }
