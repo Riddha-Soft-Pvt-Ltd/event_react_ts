@@ -16,16 +16,14 @@ export default function MessageModal({ modelOpen, setmodelOpen, responseData }: 
         <Modal open={modelOpen} onClose={Close} sx={{ display: "flex", justifyContent: "center", alignItems: "center", border: "none", }} >
             {
                 (responseData.success === true) ? (<>
-                    <Card sx={{ background: "white", width: "60% ", border: "none", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", padding: "50px" }}>
+                    <Card sx={{ background: "white", width: "30% ", border: "none", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", padding: "50px" }}>
                         <Lottie style={{ width: '200px', height: '200px' }} animationData={Success} loop={true} />
-                        <Typography variant="h6" sx={{ border: "none" }}>{responseData?.message}</Typography>
+                        <Typography variant="h6" >{responseData?.message}</Typography>
                     </Card>
                 </>) : (
-                    <Card sx={{ background: "white", width: "60% ", border: "none", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", padding: "50px" }}>
+                    <Card sx={{ background: "white", width: "30% ", border: "none", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", padding: "50px" }}>
                         <Lottie style={{ width: '200px', height: '200px' }} animationData={Error} loop={true} />
-                        <Typography variant="h6" sx={{ border: "none" }}>  {responseData?.message}</Typography>
-
-
+                        <Typography variant="h6" >  {responseData?.message}</Typography>
                     </Card>)
             }
         </Modal >
