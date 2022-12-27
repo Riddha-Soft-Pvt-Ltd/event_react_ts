@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Grid, Stack, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import styled from 'styled-components';
 import CardholderTable from './CardholderTable';
 import NewCardholderModal from './NewCardholderModal';
 import { httpGetVisitors } from '../../http/visitors';
+import TableSeamer from '../../components/loader/TableSeamer';
+import { textAlign } from '@mui/system';
+import CardModel from '../../components/Modal/CardModel';
 
 const BoxStyle = styled(Box)`
       display:flex;
@@ -29,16 +32,22 @@ const AddCustomerBtn = styled(Button)`
 
 const Dashboard = () => {
   const [visitors, setVisitors] = useState<[]>([])
-  const [skipTake, setSkipTake] = useState({ skip: 0, take: 10 });
+  const [skipTake, setSkipTake] = useState({ skip: 0, take: 4 });
   const [open, setOpen] = useState(false)
+  const [modelOpen, setModelOpen] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [loadMore, setLoadMore] = useState(false);
 
   const getAllVisitors = async (skip: number, take: number) => {
     console.log(skip, take);
     const visitorsData = await httpGetVisitors(skip, take);
     setVisitors([...visitors, ...visitorsData]);
+    setLoading(false);
+    setLoadMore(false);
   }
 
   useEffect(() => {
+    setLoading(true);
     getAllVisitors(skipTake.skip, skipTake.take);
     return () => {
     }
@@ -65,13 +74,15 @@ const Dashboard = () => {
           </Grid>
         </Grid>
         <NewCardholderModal open={open} setOpen={setOpen} />
-        <CardholderTable visitors={visitors} />
-        <button onClick={() => {
-          setSkipTake({ skip: skipTake.skip + 10, take: skipTake.take });
-          getAllVisitors(skipTake.skip + 10, skipTake.take);
-        }}>
-          load more
-        </button>
+        {loading ? <TableSeamer /> : <CardholderTable visitors={visitors} modelOpen={modelOpen} setModelOpen={setModelOpen} />}
+        {loadMore ? (<Box sx={{ display: "flex", justifyContent: "center" }}><CircularProgress /></Box>) :
+          <button onClick={() => {
+            setLoadMore(true);
+            setSkipTake({ skip: skipTake.skip + 10, take: skipTake.take });
+            getAllVisitors(skipTake.skip + 10, skipTake.take);
+          }}>
+            load more
+          </button>}
       </BoxStyle>
     </>
   )

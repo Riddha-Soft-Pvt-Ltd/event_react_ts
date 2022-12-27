@@ -1,6 +1,7 @@
 // mui imports
 import { Box, Container, Typography } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 import styled from 'styled-components'
