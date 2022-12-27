@@ -20,16 +20,20 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import QRCode from "react-qr-code";
+import TableSeamer from '../../components/loader/TableSeamer';
+import CardModel from '../../components/Modal/CardModel';
 
-const CardholderTable = ({ visitors }: { visitors: any }) => {
+const CardholderTable = ({ visitors, setModelOpen, modelOpen }: any) => {
     return (
         <>
             <TextField label="search" variant="outlined" sx={{ width: '20%', marginLeft: '20px' }} />
             <TableContainer component={Paper}>
                 <Table>
+
                     <TableHead>
                         <TableHeader />
                     </TableHead>
+
                     <TableBody>
                         {visitors && visitors.map((visitor: any, index: number) => (
                             <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
@@ -40,7 +44,8 @@ const CardholderTable = ({ visitors }: { visitors: any }) => {
                                 <TableCell align='left'>{visitor.address}</TableCell>
                                 <TableCell sx={{ width: '20px' }}>{visitor.email}</TableCell>
                                 <TableCell sx={{ width: '20px' }}>{visitor.email}</TableCell>
-                                <TableCell align='center'><ActionCollection cardholders={visitor} userID={visitor._id} getCardHolderData={() => { }} /></TableCell>
+                                <TableCell align='center'>
+                                    <ActionCollection modelOpen={modelOpen} setModelOpen={setModelOpen} cardholders={visitor} userID={visitor._id} getCardHolderData={() => { }} /></TableCell>
                             </TableRow>
                         ))
                         }
@@ -53,48 +58,19 @@ const CardholderTable = ({ visitors }: { visitors: any }) => {
 
 export default CardholderTable
 
-const ActionCollection = ({ userID, cardholders, getCardHolderData }: { userID: string, cardholders: any, getCardHolderData: any }) => {
-    // const [edit, setEdit] = useState<boolean>(false);
+const ActionCollection = ({ userID, cardholders, getCardHolderData, setModelOpen, modelOpen }: { userID: string, cardholders: any, getCardHolderData: any, setModelOpen: any, modelOpen: any }) => {
+    console.log(cardholders)
 
-    // // for delete modal
-    // const [deleteModal, setDeleteModal] = React.useState(false);
-    // const handleOpen = () => setDeleteModal(true);
-
-    // //for update modal
-    // const [open, setOpen] = useState(false)
-    // const handleOpenupdateModal = () => setOpen(true);
-
-    // // for view
-    // const opemModel = () => setEdit(true);
-
-    // //delete api implementation 
-    // const handleDelete = () => {
-    //     var token = getToken();
-
-    //     axios.delete(endPoints.deleteCardholderUrl.toString() + userID, {
-    //         headers: {
-    //             "Authorization": `Bearer ${token}`
-    //         }
-    //     })
-    //         .then((resp) => {
-    //             getCardHolderData();
-    //             toast.success('User Deleted',{autoClose:2000});
-    //         })
-    //         .catch((error) => {
-    //             toast.error('Error white deleting..');
-    //         })
-    //         ;
-    //     setDeleteModal(false);
-
-    // }
 
     return (
         <Stack direction={'row'} spacing={1} >
             <ButtonGroup variant='text'>
 
-                <Button color='success' ><VisibilityOutlinedIcon /></Button>
+                <Button color='success' onClick={() => setModelOpen(true)}  ><VisibilityOutlinedIcon /></Button>
                 <Button color='primary'  ><BorderColorOutlinedIcon /></Button>
                 <Button color='error' ><DeleteForeverOutlinedIcon /></Button>
+                <CardModel cardholders={cardholders} modelOpen={modelOpen} setModelOpen={setModelOpen} />
+
                 {/* <UpdateNewCardholder cardholders={cardholders} open={open} setOpen={setOpen} />
                 <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} handleDelete={handleDelete} />
                 <ViewCardholder cardholders={cardholders} edit={edit} setEdit={setEdit} /> */}
