@@ -1,6 +1,6 @@
 import axios from "axios";
+import { customHeader } from "../utils/token.utils";
 import { deleteVisitors, editVisitors, getVisitors, saveVisitors } from "./endpoints/endpoints";
-import { customHeader } from "./facilities";
 
 export const httpGetVisitors = async (skip: string | number, take: string | number) => {
     let visitors: [] = [];
