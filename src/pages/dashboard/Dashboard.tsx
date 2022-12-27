@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, Grid, Stack, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Stack, Typography, TextField, Grid } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import styled from 'styled-components';
 import CardholderTable from './CardholderTable';
 import NewCardholderModal from './NewCardholderModal';
-import { httpGetVisitors } from '../../http/visitors';
+import { httpGetVisitors, httpSearchVisitors } from '../../http/visitors';
 import TableSeamer from '../../components/loader/TableSeamer';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { textAlign } from '@mui/system';
-import CardModel from '../../components/Modal/CardModel';
 
 const BoxStyle = styled(Box)`
       display:flex;
@@ -33,11 +31,23 @@ const AddCustomerBtn = styled(Button)`
 
 const Dashboard = () => {
   const [visitors, setVisitors] = useState<[]>([])
-  const [skipTake, setSkipTake] = useState({ skip: 0, take: 4 });
+  const [skipTake, setSkipTake] = useState({ skip: 0, take: 10 });
   const [open, setOpen] = useState(false)
   const [modelOpen, setModelOpen] = useState(false)
   const [loading, setLoading] = useState(false);
   const [loadMore, setLoadMore] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const [searchText, setSearchText] = useState("");
+
+
+
+  //search visitors
+  const searchVisitors = async (search: string) => {
+    setIsSearching(true);
+    const searchedVisitors = await httpSearchVisitors(search);
+    setVisitors(searchedVisitors);
+  }
 
   const getAllVisitors = async (skip: number, take: number) => {
     const visitorsData = await httpGetVisitors(skip, take);
@@ -56,7 +66,6 @@ const Dashboard = () => {
   return (
     <>
       <Typography sx={{ fontWeight: 700, fontSize: '30px', lineHeight: '32px' }}>Visitors</Typography>
-
       <BoxStyle>
         <Grid container>
           <Grid item xs={6}>
@@ -74,15 +83,50 @@ const Dashboard = () => {
           </Grid>
         </Grid>
         <NewCardholderModal open={open} setOpen={setOpen} getAllVisitors={() => getAllVisitors(0, 10)} />
-        {loading ? <TableSeamer /> : <CardholderTable visitors={visitors} modelOpen={modelOpen} setModelOpen={setModelOpen} />}
-        {loadMore ? (<Box sx={{ display: "flex", justifyContent: "center" }}><CircularProgress /></Box>) :
-          <button style={{ border: 0, margin: "5px", backgroundColor: "white", display: "flex", alignItems: "center", justifyContent: "center" }} onClick={() => {
+        <Grid container>
+          <Grid item xs={4}>
+            <TextField label="search" onChange={(e) => setSearchText(e.target.value)}
+              variant="outlined" sx={{ marginLeft: '20px' }} onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  searchVisitors(searchText)
+                }
+              }} />
+          </Grid>
+          <Grid item xs={8}>
+            <div onClick={async () => {
+              setIsSearching(false);
+              setVisitors([]);
+              setSkipTake({ skip: 0, take: 10 });
+              await getAllVisitors(0, 10)
+            }}> close</div>
+          </Grid>
+        </Grid>
+        {loading ?
+          <TableSeamer /> :
+          <CardholderTable
+            searchVisitors={searchVisitors}
+            visitors={visitors}
+            modelOpen={modelOpen}
+            setModelOpen={setModelOpen} />}
+        {!isSearching && (loadMore ?
+          (<Box sx={{ display: "flex", justifyContent: "center" }}>
+            <CircularProgress />
+          </Box>) :
+          <button style={{
+            border: 0,
+            margin: "5px",
+            backgroundColor: "white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }} onClick={() => {
             setLoadMore(true);
-            setSkipTake({ skip: skipTake.skip + 10, take: skipTake.take });
-            getAllVisitors(skipTake.skip + 10, skipTake.take);
+            const skip = 0; const take = 10;
+            setSkipTake({ skip: skip, take: take });
+            getAllVisitors(skip, take);
           }}>
             Load more <ExpandMoreIcon />
-          </button>}
+          </button>)}
       </BoxStyle>
     </>
   )
