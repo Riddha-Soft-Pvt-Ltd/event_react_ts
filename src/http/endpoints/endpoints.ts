@@ -18,7 +18,7 @@ export const editFacilities = (id: string) =>
   BaseUrl + `facility/update?id=${id}`;
 
 export const visitorsCheckInCheckOut = BaseUrl + "";
-export const visitorsFacilityCheckInCheckOut = BaseUrl + "";
 
 export const checkin = BaseUrl + "gate-checkin/check-in";
 export const checkout = BaseUrl + "gate-checkin/check-out";
+export const visitorsFacilityCheckInCheckOut = BaseUrl + "facility-checkin/check-in";

@@ -7,6 +7,9 @@ import Scanner from '../../assets/scanner.json'
 //mui icons
 import { GoBack } from './Check_In_Out';
 import { httpGetFacilities } from '../../http/facilities';
+import axios from 'axios';
+import { visitorsFacilityCheckInCheckOut } from '../../http/endpoints/endpoints';
+import { customHeader } from '../../utils/token.utils';
 
 const BoxContainer = styled(Box)`
 height:100%;
@@ -21,6 +24,8 @@ const Facilities = () => {
     const [value, setValue] = useState('');
     const [content, setContent] = useState<any>('');
     const [facilities, setFacilities] = useState([]);
+    
+   
 
 
     const handleChange = (event: any) => {
@@ -38,6 +43,19 @@ const Facilities = () => {
         }
     }, [])
 
+    const handleSubmit = () =>{
+        axios.post(visitorsFacilityCheckInCheckOut,{
+            visitorId:content,
+            facilityId:value
+        },{ headers: customHeader })
+        .then((resp) =>{
+            console.log(resp);
+        })
+        .catch((error) =>{
+            console.log(error);
+        })
+    }
+
 
     return (
         <div onClick={() => { }}>
@@ -49,6 +67,8 @@ const Facilities = () => {
                         <Lottie style={{ width: '250px', height: '250px' }} animationData={Scanner} loop={true} />
                         {/* Dropdown component  */}
                         <Typography variant={'h3'} textAlign={'center'}>Scan your Card </Typography>
+                        
+                        <Stack  sx={{width:'100%'}} spacing={2} justifyContent='center' alignItems={'center'}>
                         <FormControl sx={{ width: '20%' }}>
                             <InputLabel id="check">Choose Facility</InputLabel>
                             <Select
@@ -57,16 +77,24 @@ const Facilities = () => {
                                 value={value}
                                 onChange={handleChange}
                                 label='Choose Facility'
+                                fullWidth
                             >
                                 {facilities.map((facility: any, index) => {
                                     return <MenuItem key={index} value={facility._id}>{facility.name}</MenuItem>
                                 })}
-                                <MenuItem value={2}>Out</MenuItem>
+                                
                             </Select>
                         </FormControl>
-                        <TextField value={content} label='Scan your Card' autoFocus onChange={(e) => {
+                        
+
+                        <TextField onKeyDown={(e) =>{
+                            if(e.key ==='Enter'){
+                                handleSubmit();
+                            }
+                        }}  sx={{ width: '20%' }} value={content} label='Scan your Card' autoFocus onChange={(e) => {
                             setContent(e.target.value);
                         }} />
+                        </Stack>
 
                     </Stack>
                 </Grid>
