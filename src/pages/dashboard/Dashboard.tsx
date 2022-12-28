@@ -7,7 +7,7 @@ import NewCardholderModal from './NewCardholderModal';
 import { httpGetVisitors, httpSearchVisitors } from '../../http/visitors';
 import TableSeamer from '../../components/loader/TableSeamer';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { deleteVisitors } from '../../http/endpoints/endpoints';
+import { deleteVisitors, editVisitors } from '../../http/endpoints/endpoints';
 import axios from 'axios';
 import { customHeader } from '../../utils/token.utils';
 import { toast } from 'react-toastify';
@@ -72,6 +72,21 @@ const Dashboard = () => {
     });
   }
 
+
+  const updateVisitor = async (id:string,data:any) =>{
+    console.log(data,id)
+   await axios.post(editVisitors(id),data, { headers: customHeader })
+    .then((resp) =>{
+      console.log(resp)
+      fetchInitialVisitors();
+      toast.success('Updated Successfully')
+      
+    })
+    .catch((error) =>{
+      console.log(error);
+    })
+  }
+
   useEffect(() => {
     setLoading(true);
     fetchInitialVisitors();
@@ -129,6 +144,7 @@ const Dashboard = () => {
           <CardholderTable
             searchVisitors={searchVisitors}
             deleteUser={deleteUser}
+            updateVisitor={updateVisitor}
             visitors={visitors}
             modelOpen={modelOpen}
             setModelOpen={setModelOpen} />}
