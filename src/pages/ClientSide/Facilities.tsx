@@ -34,7 +34,7 @@ const Facilities = () => {
         axios.post(visitorsFacilityCheckInCheckOut, {
             code: content,
             facilityId: value
-        }, { headers: customHeader })
+        }, { headers: customHeader() })
             .then((resp) => {
                 setresponseData(resp.data)
                 if (responseData) {

@@ -8,7 +8,7 @@ import { deleteFacilities, editFacilities, getFacilities, saveFacilities } from 
 
 export const httpGetFacilities = async () => {
     let facilities: never[] = []
-    await axios.get(getFacilities, { headers: customHeader }).then((response) => {
+    await axios.get(getFacilities, { headers: customHeader() }).then((response) => {
         if (response && response.data && response.data.success) {
             facilities = response.data.data
             return;
@@ -19,7 +19,7 @@ export const httpGetFacilities = async () => {
 
 export const httpSaveFacilities = async (data: any) => {
     let success = false;
-    await axios.post(saveFacilities, data, { headers: customHeader }).then((response) => {
+    await axios.post(saveFacilities, data, { headers: customHeader() }).then((response) => {
         if (response && response.data && response.data.success) {
             success = response.data.success;
         }
@@ -28,9 +28,9 @@ export const httpSaveFacilities = async (data: any) => {
     return success;
 };
 
-export const httpEditFacilities = async(id: string,data:any) => {
+export const httpEditFacilities = async (id: string, data: any) => {
     let success = false;
-    await axios.post(editFacilities(id),data, { headers: customHeader }).then((response) => {
+    await axios.post(editFacilities(id), data, { headers: customHeader() }).then((response) => {
         if (response && response.data && response.data.success) {
             success = response.data.success;
         }
@@ -41,7 +41,7 @@ export const httpEditFacilities = async(id: string,data:any) => {
 
 export const httpDeleteFacilities = async (id: string) => {
     let success = false;
-    await axios.delete(deleteFacilities(id), { headers: customHeader }).then((response) => {
+    await axios.delete(deleteFacilities(id), { headers: customHeader() }).then((response) => {
         if (response && response.data && response.data.success) {
             success = response.data.success;
         }

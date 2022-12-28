@@ -1,4 +1,14 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { AppContext } from '../../contexts/AppContext';
+
+import { Controller, useForm } from 'react-hook-form'
+import Cookies from 'universal-cookie'
+import axios from 'axios';
+import { adminLoginUrl } from '../../http/endpoints/endpoints';
+
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,33 +18,28 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
-import { Controller, useForm } from 'react-hook-form'
-import Cookies from 'universal-cookie'
-import axios from 'axios';
+
 import { toast } from 'react-toastify';
-import { adminLoginUrl } from '../../http/endpoints/endpoints';
+
 
 const theme = createTheme();
 
 export default function FormSection() {
-    const [value, setValue] = React.useState()
+    const [value, setValue] = React.useState();
+
+    const appContext = React.useContext(AppContext);
 
     const navigate = useNavigate();
-    const {
-        register,
-        control,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
-    const onSubmit: (data: any) => void = (data) => {
 
+    const { register, control, handleSubmit, formState: { errors }, } = useForm();
+
+    const onSubmit: (data: any) => void = (data) => {
         axios.post(adminLoginUrl.toString(), {
             email: data.email,
             password: data.password,
         })
             .then(function (response) {
-                if (response.data.success === true) {
+                if (response && response.data && response.data.success === true) {
                     const cookie = new Cookies();
                     cookie.set("isLoggedIn", "true", { maxAge: 36000 }); // 60 minutes 3600s
                     cookie.set('token', response.data.data.token)
@@ -42,14 +47,13 @@ export default function FormSection() {
                     navigate("/");
                 }
                 else {
-                    toast.error('Invalid username and password');
+                    toast.error(response.data.message);
                 }
             })
             .catch(function (error) {
-                toast.error('Invalid username and password');
+                toast.error(error.message);
             });
     }
-
 
     return (
         <ThemeProvider theme={theme}>

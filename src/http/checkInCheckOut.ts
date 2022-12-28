@@ -5,7 +5,7 @@ export const httpVisitorCheckinCheckOut = (data: any) => axios.post("", data);
 
 export const httpVisitorFacilitiesCheckIn = async (data: any) => {
   const response = await axios
-    .post(checkin, data, { headers: customHeader })
+    .post(checkin, data, { headers: customHeader() })
     .then((response) => {
       if (response && response.data && response.data.success) {
         return response.data;
@@ -18,7 +18,7 @@ export const httpVisitorFacilitiesCheckIn = async (data: any) => {
 
 export const httpVisitorFacilitiesCheckOut = async (data: any) => {
   const response = await axios
-    .post(checkout, data, { headers: customHeader })
+    .post(checkout, data, { headers: customHeader() })
     .then((response) => {
       if (response && response.data && response.data.success) {
         return response.data;

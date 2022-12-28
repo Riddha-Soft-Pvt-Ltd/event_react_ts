@@ -1,22 +1,119 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, Stack, Typography, TextField, Grid } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import styled from 'styled-components';
 import CardholderTable from './CardholderTable';
 import NewCardholderModal from './NewCardholderModal';
-import { httpGetVisitors, httpSearchVisitors } from '../../http/visitors';
-import TableSeamer from '../../components/loader/TableSeamer';
+
+import { VisitorContext } from '../../contexts/VisitorContext';
+
+import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { deleteVisitors, editVisitors } from '../../http/endpoints/endpoints';
-import axios from 'axios';
-import { customHeader } from '../../utils/token.utils';
-import { toast } from 'react-toastify';
+
+const btnStyle = {
+  border: 0,
+  margin: "5px",
+  backgroundColor: "white",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center"
+};
+const Dashboard = () => {
+  const [open, setOpen] = useState(false);
+  const [modelOpen, setModelOpen] = useState(false);
+
+  const [loadMore, setLoadMore] = useState(false);
+
+  const visitorContext = useContext(VisitorContext);
+
+  useEffect(() => {
+    visitorContext.getVisitorData();
+  }, []);
+
+  const header = <Grid container style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+    <Grid item xs={6}>
+      <Typography sx={{ margin: '10px 0 0 15px', fontSize: '20px' }}>All Visitors</Typography>
+    </Grid>
+    <Grid item xs={6}>
+      <Box>
+        <Stack direction="row" mb={3} pt={2} spacing={2} sx={{ justifyContent: "flex-end", alignItems: "center" }}>
+          <AddCustomerBtn onClick={() => setOpen(true)}>
+            <AddIcon />
+            <Typography>NEW USER</Typography>
+          </AddCustomerBtn>
+        </Stack>
+      </Box>
+    </Grid>
+  </Grid>
+
+  return (
+    <>
+      <Typography sx={{ fontWeight: 700, fontSize: '30px', lineHeight: '32px' }}>Visitors</Typography>
+      <BoxStyle>
+        {header}
+        <NewCardholderModal open={open} setOpen={setOpen} />
+        <SearchBar />
+        {visitorContext.initialLoader || visitorContext.searchLoader ?
+          <CircularLoader />
+          :
+          <CardholderTable
+            visitors={visitorContext.searchMode ? visitorContext.searchData : visitorContext.visitors}
+            modelOpen={modelOpen}
+            setModelOpen={setModelOpen}
+          />}
+        {!visitorContext.searchMode &&
+          (loadMore ? <CircularLoader /> :
+            <button style={btnStyle} onClick={async () => {
+              setLoadMore(true);
+              await visitorContext.loadMoreVisitors()
+              setLoadMore(false);
+            }}>
+              Load more <ExpandMoreIcon />
+            </button>)
+        }
+      </BoxStyle>
+    </>
+  )
+}
+
+const CircularLoader = () => {
+  return <Box sx={{ display: "flex", justifyContent: "center" }}>
+    <CircularProgress />
+  </Box>
+}
+
+const SearchBar = () => {
+  const visitorContext = useContext(VisitorContext);
+  return (
+    <Grid container>
+      <Grid item xs={4} style={{ display: 'flex', gap: 15 }}>
+        <TextField value={visitorContext.searchText} label="search" onChange={(e) => visitorContext.setSearchText(e.target.value)}
+          variant="outlined" sx={{ marginLeft: '10px' }} onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              visitorContext.searchVisitors()
+            }
+          }} />
+        {visitorContext.searchMode && <p
+          onClick={() => {
+            visitorContext.closeSearchMode();
+            visitorContext.setSearchText('');
+          }}>
+          <CloseIcon />
+        </p>}
+      </Grid>
+    </Grid>
+  )
+}
+
+
+export default Dashboard;
 
 const BoxStyle = styled(Box)`
       display:flex;
       flex-direction:column;
       gap:10px;
       width:100%;
+      min-height:60%;
       background:white;
       margin:32px 0;
 `;
@@ -32,144 +129,3 @@ const AddCustomerBtn = styled(Button)`
       margin-right:10px !important;
       justify-content: space-between !important;
 `;
-
-const Dashboard = () => {
-  const [visitors, setVisitors] = useState<[]>([])
-  const [skipTake, setSkipTake] = useState({ skip: 0, take: 10 });
-  const [open, setOpen] = useState(false)
-  const [modelOpen, setModelOpen] = useState(false)
-  const [loading, setLoading] = useState(false);
-  const [loadMore, setLoadMore] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
-
-  const [searchText, setSearchText] = useState("");
-
-
-
-  //search visitors
-  const searchVisitors = async (search: string) => {
-    setIsSearching(true);
-    const searchedVisitors = await httpSearchVisitors(search);
-    setVisitors(searchedVisitors);
-  }
-
-  const getAllVisitors = async (skip: number, take: number) => {
-    const visitorsData = await httpGetVisitors(skip, take);
-    setVisitors([...visitors, ...visitorsData]);
-    setLoading(false);
-    setLoadMore(false);
-  }
-
-  const deleteUser = async (id: string) => {
-    // console.log('deleting user');
-    await axios.delete(deleteVisitors(id), { headers: customHeader }).then((response) => {
-      if (response && response.data && response.data.success) {
-        fetchInitialVisitors();
-      }
-      console.log(response, 'deleting user');
-    }).catch((err) => {
-      toast.error(err.message);
-    });
-  }
-
-
-  const updateVisitor = async (id:string,data:any) =>{
-    console.log(data,id)
-   await axios.post(editVisitors(id),data, { headers: customHeader })
-    .then((resp) =>{
-      console.log(resp)
-      fetchInitialVisitors();
-      toast.success('Updated Successfully')
-      
-    })
-    .catch((error) =>{
-      console.log(error);
-    })
-  }
-
-  useEffect(() => {
-    setLoading(true);
-    fetchInitialVisitors();
-    setLoading(false);
-    return () => {
-    }
-  }, [])
-
-  const fetchInitialVisitors = async () => {
-    setSkipTake({ skip: 0, take: 10 });
-    const visitorsData = await httpGetVisitors(0, 10);
-    setVisitors(visitorsData);
-  }
-
-  return (
-    <>
-      <Typography sx={{ fontWeight: 700, fontSize: '30px', lineHeight: '32px' }}>Visitors</Typography>
-      <BoxStyle>
-        <Grid container>
-          <Grid item xs={6}>
-            <Typography sx={{ margin: '10px 0 0 15px', fontSize: '20px' }}>All Visitors</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Box>
-              <Stack direction="row" mb={3} pt={2} spacing={2} sx={{ justifyContent: "flex-end", alignItems: "center" }}>
-                <AddCustomerBtn onClick={() => setOpen(true)}>
-                  <AddIcon />
-                  <Typography>NEW USER</Typography>
-                </AddCustomerBtn>
-              </Stack>
-            </Box>
-          </Grid>
-        </Grid>
-        <NewCardholderModal open={open} setOpen={setOpen} getAllVisitors={fetchInitialVisitors} />
-        {/* <Grid container>
-          <Grid item xs={4}>
-            <TextField label="search" onChange={(e) => setSearchText(e.target.value)}
-              variant="outlined" sx={{ marginLeft: '20px' }} onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  searchVisitors(searchText)
-                }
-              }} />
-          </Grid>
-          <Grid item xs={8}>
-            <div onClick={async () => {
-              setIsSearching(false);
-              setVisitors([]);
-              setSkipTake({ skip: 0, take: 10 });
-              await getAllVisitors(0, 10)
-            }}> close</div>
-          </Grid>
-        </Grid> */}
-        {loading ?
-          <TableSeamer /> :
-          <CardholderTable
-            searchVisitors={searchVisitors}
-            deleteUser={deleteUser}
-            updateVisitor={updateVisitor}
-            visitors={visitors}
-            modelOpen={modelOpen}
-            setModelOpen={setModelOpen} />}
-        {!isSearching && (loadMore ?
-          (<Box sx={{ display: "flex", justifyContent: "center" }}>
-            <CircularProgress />
-          </Box>) :
-          <button style={{
-            border: 0,
-            margin: "5px",
-            backgroundColor: "white",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-          }} onClick={() => {
-            setLoadMore(true);
-            const skip = (skipTake.skip + 10); const take = 10;
-            setSkipTake({ skip: skip, take: take });
-            getAllVisitors(skip, take);
-          }}>
-            Load more <ExpandMoreIcon />
-          </button>)}
-      </BoxStyle>
-    </>
-  )
-}
-
-export default Dashboard

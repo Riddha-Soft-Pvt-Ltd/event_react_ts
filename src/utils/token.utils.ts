@@ -6,8 +6,21 @@ export const getToken = () => {
     return token;
 }
 
+export const clearToken = () => {
+    const cookie = new Cookies();
+    cookie.remove("token");
+}
+
+export const setToken = () => {
+
+}
+
 export var token = getToken();
 
-export const customHeader = {
-    "Authorization": `Bearer ${token}`
+export const customHeader = () => {
+    let token = getToken();
+
+    return {
+        "Authorization": `Bearer ${token}`
+    }
 }

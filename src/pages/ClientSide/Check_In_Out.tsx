@@ -1,5 +1,5 @@
-import { Box, FormControl, Grid, Input, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
-import React, { useCallback, useRef, useState } from 'react';
+import { FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { useRef, useState } from 'react';
 import Lottie from "lottie-react";
 import Scanner from '../../assets/scanner.json'
 import { Link } from 'react-router-dom';
@@ -11,15 +11,14 @@ import { httpVisitorFacilitiesCheckIn, httpVisitorFacilitiesCheckOut } from '../
 
 const Check_In_Out = () => {
     const [value, setValue] = useState("1");
-    const [focus, setFocus] = useState(true);
     const [data, setdata] = useState<any>('');
     const [responseData, setresponse] = useState('')
     const [modelOpen, setmodelOpen] = useState(false)
 
+    const scan = useRef<HTMLInputElement | null>(null);
+
     const handleChange = (event: any) => {
-        setFocus(false);
         setValue(event.target.value as string);
-        setFocus(true);
     };
 
     const visitorsGateCheckIn = async () => {
@@ -71,11 +70,17 @@ const Check_In_Out = () => {
                             </Select>
                         </FormControl>
 
-                        <TextField sx={{ width: '30%' }} autoFocus onKeyDown={(event) => {
-                            if (event.key === "Enter") {
-                                (value === "1") ? visitorsGateCheckIn() : visitorsGateCheckOut()
-                            }
-                        }} value={data} onChange={(e) => setdata(e.target.value)} />
+                        <TextField
+                            sx={{ width: '30%' }}
+                            autoFocus
+                            onKeyDown={(event) => {
+                                if (event.key === "Enter") {
+                                    (value === "1") ? visitorsGateCheckIn() : visitorsGateCheckOut()
+                                }
+                            }}
+                            ref={scan}
+                            value={data}
+                            onChange={(e) => setdata(e.target.value)} />
                     </Stack>
                 </Grid>
             </Grid>

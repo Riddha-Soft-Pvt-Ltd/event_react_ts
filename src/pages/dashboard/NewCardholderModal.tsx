@@ -1,15 +1,17 @@
 import { Box, Button, Modal, Stack, TextField, Typography } from "@mui/material";
-import { useCallback, useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import styled from 'styled-components'
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 //tosify
 import { toast } from 'react-toastify';
+
 import { newVisitorSchema } from "../../utils/YupSchema";
-import { getVisitors, saveVisitors } from "../../http/endpoints/endpoints";
+import { saveVisitors } from "../../http/endpoints/endpoints";
 import axios from "axios";
 import { customHeader } from "../../utils/token.utils";
+import { VisitorContext } from "../../contexts/VisitorContext";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -33,18 +35,9 @@ padding: 0px;
 gap: 24px;
 margin-top:20px;
 `
-const NewCardholderModal = ({ open, setOpen, getAllVisitors }: { open: boolean, setOpen: (value: boolean) => void, getAllVisitors: any }) => {
-    const handleClose = () => {
-        setOpen(false);
-    }
-    const {
-        register,
-        reset,
-        control,
-        setValue,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
+const NewCardholderModal = ({ open, setOpen, }: { open: boolean, setOpen: (value: boolean) => void }) => {
+    const visitorContext = useContext(VisitorContext);
+    const { register, reset, control, handleSubmit, formState: { errors }, } = useForm({
         resolver: yupResolver(newVisitorSchema),
         defaultValues: {
             designation: '',
@@ -55,16 +48,13 @@ const NewCardholderModal = ({ open, setOpen, getAllVisitors }: { open: boolean, 
         }
     });
 
-
+    const handleClose = () => { setOpen(false); }
 
     const onSubmit: (data: any) => void = (data) => {
-        axios.post(saveVisitors.toString(),
-            data
-            , { headers: customHeader })
+        axios.post(saveVisitors.toString(), data, { headers: customHeader() })
             .then((resp) => {
-                getAllVisitors();
+                visitorContext.getVisitorData();
                 toast.success('New Visitor Added');
-
             })
             .catch((error) => {
                 toast.error('Error while creating new visitor')
@@ -84,16 +74,13 @@ const NewCardholderModal = ({ open, setOpen, getAllVisitors }: { open: boolean, 
                 onClose={handleClose}>
                 <Box sx={style} component='form' onSubmit={handleSubmit(onSubmit)} >
                     <Typography sx={{ fontWeight: 400, fontSize: '24px', lineHeight: '133.2%' }}>Add new User</Typography>
-
                     <PersonalFormStyle>
                         <Typography sx={{ fontWeight: 500, fontSize: '20px' }}>Personal Information</Typography>
                         <PersonalForm register={register} control={control} errors={errors} />
                     </PersonalFormStyle>
-
                     <ContactForm register={register} control={control} errors={errors} />
                     <Buttons handleClose={handleClose} />
                 </Box>
-
             </Modal>
         </>
     )
@@ -128,12 +115,10 @@ const PersonalForm = ({ register, control, errors }: { register: any, control: a
                     control={control}
                     render={({ field: { onChange, value } }) => (
                         <>
-
                             <TextField
                                 label='Designation'
                                 type={'text'}
                                 sx={{ width: '50%' }}
-
                                 id="designation"
                                 onChange={onChange}
                                 value={value}
@@ -148,12 +133,10 @@ const PersonalForm = ({ register, control, errors }: { register: any, control: a
                     control={control}
                     render={({ field: { onChange, value } }) => (
                         <>
-
                             <TextField
                                 label='Club Name'
                                 type={'text'}
                                 sx={{ width: '50%' }}
-
                                 id="clubName"
                                 onChange={onChange}
                                 value={value}
@@ -163,53 +146,7 @@ const PersonalForm = ({ register, control, errors }: { register: any, control: a
                         </>
                     )}
                 />
-
             </Stack>
-
-
-            <Stack direction={'row'} spacing={2} width='100%'>
-                {/* <Controller
-                    name="code"
-                    control={control}
-                    render={({ field: { onChange, value } }) => (
-                        <>
-                            <TextField
-                                label='Code'
-                                type={'text'}
-                                sx={{ width: '50%' }}
-                                id="code"
-                                onChange={onChange}
-                                value={value}
-                                error={errors.code && Boolean(errors.code.message)}
-                                helperText={errors.code ? `${errors.code.message}` : ""}
-                            />
-                        </>
-                    )} */}
-                {/* /> */}
-                {/* <Controller
-                    name="citizenship"
-                    control={control}
-                    render={({ field: { onChange, value } }) => (
-                        <>
-                            <TextField
-                                label='CitizenShip No.'
-                                type={'text'}
-                                sx={{ width: '50%' }}
-                                id="citizenship"
-                                onChange={onChange}
-                                value={value}
-                                error={errors.citizenship && Boolean(errors.citizenship.message)}
-                                helperText={errors.citizenship ? `${errors.citizenship.message}` : ""}
-                            />
-                        </>
-                    )}
-                /> */}
-
-
-
-            </Stack>
-
-
         </>
     )
 }
@@ -223,7 +160,6 @@ const ContactForm = ({ register, control, errors }: { register: any, control: an
                     control={control}
                     render={({ field: { onChange, value } }) => (
                         <>
-
                             <TextField
                                 label='Phone'
                                 type={'number'}
@@ -242,7 +178,6 @@ const ContactForm = ({ register, control, errors }: { register: any, control: an
                     control={control}
                     render={({ field: { onChange, value } }) => (
                         <>
-
                             <TextField
                                 label='E-mail'
                                 type={'email'}
@@ -256,39 +191,12 @@ const ContactForm = ({ register, control, errors }: { register: any, control: an
                         </>
                     )}
                 />
-                {/* <Controller
-                    name="address"
-                    control={control}
-                    render={({ field: { onChange, value } }) => (
-                        <>
-
-                            <TextField
-                                label='Address'
-                                type={'text'}
-                                sx={{ width: '50%' }}
-                                id="address"
-                                onChange={onChange}
-                                value={value}
-                                error={errors.address && Boolean(errors.address.message)}
-                                helperText={errors.address ? `${errors.address.message}` : ""}
-                            />
-                        </>
-                    )}
-                /> */}
-
-
-
-
-
-
             </Stack>
-
         </>
     )
 }
 
 export const Buttons = ({ handleClose }: { handleClose: () => void }) => {
-
     return (
         <Stack direction={'row'} spacing={2} mt={4} justifyContent='flex-end' justifySelf={'flex-end'} width='100%' >
             <Button variant="outlined" color="error" onClick={handleClose} >Cancel</Button>

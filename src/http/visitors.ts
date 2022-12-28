@@ -4,7 +4,7 @@ import { deleteVisitors, editVisitors, getVisitors, saveVisitors, searchVisitors
 
 export const httpGetVisitors = async (skip: string | number, take: string | number) => {
     let visitors: [] = [];
-    await axios.get(getVisitors(skip, take), { headers: customHeader }).then((response) => {
+    await axios.get(getVisitors(skip, take), { headers: customHeader() }).then((response) => {
         console.log(response);
         if (response && response.data && response.data.success) {
             visitors = response.data.data.visitors;
@@ -16,7 +16,7 @@ export const httpGetVisitors = async (skip: string | number, take: string | numb
 
 export const httpSearchVisitors = async (search: string) => {
     let visitors: [] = [];
-    await axios.get(searchVisitors(search), { headers: customHeader }).then((response) => {
+    await axios.get(searchVisitors(search), { headers: customHeader() }).then((response) => {
         if (response && response.data && response.data.success) {
             visitors = response.data.data.visitors;
             return;
