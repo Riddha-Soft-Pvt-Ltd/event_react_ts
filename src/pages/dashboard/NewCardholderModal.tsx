@@ -53,11 +53,16 @@ const NewCardholderModal = ({ open, setOpen, }: { open: boolean, setOpen: (value
     const onSubmit: (data: any) => void = (data) => {
         axios.post(saveVisitors.toString(), data, { headers: customHeader() })
             .then((resp) => {
-                visitorContext.getVisitorData();
-                toast.success('New Visitor Added');
+                if (resp && resp.data && resp.data.success) {
+                    visitorContext.getVisitorData();
+                    toast.success('New Visitor Added');
+                }
+                else {
+                    toast.error(resp.data.message)
+                }
             })
             .catch((error) => {
-                toast.error('Error while creating new visitor')
+                toast.error(error.message);
             })
             .finally(() => {
                 handleClose();
