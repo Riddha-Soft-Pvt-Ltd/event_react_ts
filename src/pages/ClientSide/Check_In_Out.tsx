@@ -30,7 +30,7 @@ const Check_In_Out = () => {
             setTimeout(() => {
                 setmodelOpen(false);
                 setdata("");
-            }, 2000);
+            }, 4000);
         }
     }
 
@@ -42,7 +42,7 @@ const Check_In_Out = () => {
             setTimeout(() => {
                 setmodelOpen(false);
                 setdata("");
-            }, 2000);
+            }, 4000);
         }
     }
 
@@ -66,8 +66,8 @@ const Check_In_Out = () => {
                                 onChange={handleChange}
                                 label='Check In/Out'
                             >
-                                <MenuItem value={1}>In</MenuItem>
-                                <MenuItem value={2}>Out</MenuItem>
+                                <MenuItem value={"1"}>In</MenuItem>
+                                <MenuItem value={"2"}>Out</MenuItem>
                             </Select>
                         </FormControl>
 

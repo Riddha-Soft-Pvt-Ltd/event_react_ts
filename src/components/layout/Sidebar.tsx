@@ -79,7 +79,7 @@ const Sidebar = () => {
                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px" }}>
                     {/* <img src='https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA' alt="locker" style={{ width: "30px", height: "30px" }} /> */}
                     <Typography variant="h5" component="h2">
-                        <Typography variant="h5" component="span" sx={{ color: "#3C2A21" }}>Rottery</Typography>
+                        <Typography variant="h5" component="span" sx={{ color: "#3C2A21" }}>Visitors Management</Typography>
                     </Typography>
                 </Box>
                 {/*Navigation Options*/}
