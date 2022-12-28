@@ -39,7 +39,7 @@ const CardholderTable = ({ visitors, setModelOpen, modelOpen, searchVisitors, de
                                 <TableCell sx={{ width: '10px' }}>{index + 1}</TableCell>
                                 <TableCell >{visitor.name}</TableCell>
                                 <TableCell >{visitor.contact}</TableCell>
-                                <TableCell sx={{ width: '10px' }}><Barcode value={visitor.code} /></TableCell>
+                                <TableCell align="left"><Barcode width={0.5} height={20} value={visitor.code} /></TableCell>
                                 <TableCell align='left'>{visitor.email}</TableCell>
                                 <TableCell >{visitor.clubName}</TableCell>
                                 <TableCell >{visitor.designation}</TableCell>
@@ -59,13 +59,13 @@ export default CardholderTable
 
 const ActionCollection = ({ userID, cardholders, deleteUser }: { deleteUser: any, userID: string, cardholders: any, getCardHolderData: any, setModelOpen: any, modelOpen: any }) => {
     const [open, setOpen] = useState(false);
-    const [deleteModal,setDeleteModal] = useState<boolean>(false);
+    const [deleteModal, setDeleteModal] = useState<boolean>(false);
     return (
         <Stack direction={'row'} spacing={1} >
             <ButtonGroup variant='text'>
                 <Button color='success' onClick={() => setOpen(true)}  ><VisibilityOutlinedIcon /></Button>
                 {/* <Button color='primary'  ><BorderColorOutlinedIcon /></Button> */}
-                <Button color='error' onClick={() => {setDeleteModal(true)}}><DeleteForeverOutlinedIcon /></Button>
+                <Button color='error' onClick={() => { setDeleteModal(true) }}><DeleteForeverOutlinedIcon /></Button>
                 <CardModel cardholders={cardholders} modelOpen={open} setModelOpen={setOpen} />
                 <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} deleteUser={deleteUser} userID={userID} />
             </ButtonGroup>
@@ -78,7 +78,6 @@ const TableHeader = () => {
     return <TableRow>
         <TableCell><Typography>S.N</Typography>
         </TableCell>
-
         <TableCell><Typography>First Name</Typography>
         </TableCell>
         <TableCell>
@@ -87,7 +86,7 @@ const TableHeader = () => {
                 <Typography>Contact</Typography>
             </Stack>
         </TableCell>
-        <TableCell><Typography>Code</Typography>
+        <TableCell align='center'><Typography>Code</Typography>
         </TableCell>
         <TableCell align='center'>
             <Stack direction='row' gap={1}>
