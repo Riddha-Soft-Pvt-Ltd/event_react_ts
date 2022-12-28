@@ -33,7 +33,7 @@ padding: 0px;
 gap: 24px;
 margin-top:20px;
 `
-const NewCardholderModal = ({ open, setOpen,getAllVisitors}: { open: boolean, setOpen: (value: boolean) => void,getAllVisitors:any }) => {
+const NewCardholderModal = ({ open, setOpen, getAllVisitors }: { open: boolean, setOpen: (value: boolean) => void, getAllVisitors: any }) => {
     const handleClose = () => {
         setOpen(false);
     }
@@ -58,24 +58,20 @@ const NewCardholderModal = ({ open, setOpen,getAllVisitors}: { open: boolean, se
 
 
     const onSubmit: (data: any) => void = (data) => {
-
-        console.log(data);
         axios.post(saveVisitors.toString(),
             data
             , { headers: customHeader })
             .then((resp) => {
                 getAllVisitors();
-                toast.success('New Cardholder Added');
+                toast.success('New Visitor Added');
 
             })
             .catch((error) => {
-                console.log(error)
-                toast.error('Error while creating new user')
+                toast.error('Error while creating new visitor')
             })
             .finally(() => {
                 handleClose();
             })
-
     }
 
     useEffect(() => {

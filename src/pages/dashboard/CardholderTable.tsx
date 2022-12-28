@@ -19,8 +19,12 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import QRCode from "react-qr-code";
 import CardModel from '../../components/Modal/CardModel';
 import { useState } from 'react';
+import axios from 'axios';
+import { deleteVisitors } from '../../http/endpoints/endpoints';
+import { customHeader } from '../../utils/token.utils';
+import Barcode from 'react-barcode';
 
-const CardholderTable = ({ visitors, setModelOpen, modelOpen, searchVisitors }: any) => {
+const CardholderTable = ({ visitors, setModelOpen, modelOpen, searchVisitors, deleteUser }: any) => {
     return (
         <TableContainer component={Paper}>
             <Table>
@@ -28,19 +32,21 @@ const CardholderTable = ({ visitors, setModelOpen, modelOpen, searchVisitors }: 
                     <TableHeader />
                 </TableHead>
                 <TableBody>
-                    {visitors && visitors.length > 0 ? visitors.map((visitor: any, index: number) => (
-                        <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                            <TableCell sx={{ width: '10px' }}>{index + 1}</TableCell>
-                            <TableCell sx={{ width: '10px' }}><QRCode value={visitor.code} style={{ height: "50", width: "50px" }} /></TableCell>
-                            <TableCell >{visitor.name}</TableCell>
-                            <TableCell >{visitor.contact}</TableCell>
-                            <TableCell align='left'>{visitor.email}</TableCell>
-                            <TableCell >{visitor.clubName}</TableCell>
-                            <TableCell >{visitor.designation}</TableCell>
-                            <TableCell align='center'>
-                                <ActionCollection modelOpen={modelOpen} setModelOpen={setModelOpen} cardholders={visitor} userID={visitor._id} getCardHolderData={() => { }} /></TableCell>
-                        </TableRow>
-                    )) : <p> No Visitors Data</p>
+                    {visitors && visitors.length > 0 ? visitors.map((visitor: any, index: number) => {
+                        return (
+                            <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                                <TableCell sx={{ width: '10px' }}>{index + 1}</TableCell>
+                                <TableCell >{visitor.name}</TableCell>
+                                <TableCell >{visitor.contact}</TableCell>
+                                <TableCell sx={{ width: '10px' }}><Barcode value={visitor.code} /></TableCell>
+                                <TableCell align='left'>{visitor.email}</TableCell>
+                                <TableCell >{visitor.clubName}</TableCell>
+                                <TableCell >{visitor.designation}</TableCell>
+                                <TableCell align='center'>
+                                    <ActionCollection modelOpen={modelOpen} deleteUser={deleteUser} setModelOpen={setModelOpen} cardholders={visitor} userID={visitor._id} getCardHolderData={() => { }} /></TableCell>
+                            </TableRow>
+                        )
+                    }) : <p> No Visitors Data</p>
                     }
                 </TableBody>
             </Table>
@@ -50,14 +56,16 @@ const CardholderTable = ({ visitors, setModelOpen, modelOpen, searchVisitors }: 
 
 export default CardholderTable
 
-const ActionCollection = ({ userID, cardholders }: { userID: string, cardholders: any, getCardHolderData: any, setModelOpen: any, modelOpen: any }) => {
+const ActionCollection = ({ userID, cardholders, deleteUser }: { deleteUser: any, userID: string, cardholders: any, getCardHolderData: any, setModelOpen: any, modelOpen: any }) => {
     const [open, setOpen] = useState(false);
     return (
         <Stack direction={'row'} spacing={1} >
             <ButtonGroup variant='text'>
                 <Button color='success' onClick={() => setOpen(true)}  ><VisibilityOutlinedIcon /></Button>
-                <Button color='primary'  ><BorderColorOutlinedIcon /></Button>
-                <Button color='error' ><DeleteForeverOutlinedIcon /></Button>
+                {/* <Button color='primary'  ><BorderColorOutlinedIcon /></Button> */}
+                <Button color='error' onClick={() => {
+                    deleteUser(userID)
+                }}><DeleteForeverOutlinedIcon /></Button>
                 <CardModel cardholders={cardholders} modelOpen={open} setModelOpen={setOpen} />
             </ButtonGroup>
         </Stack>
@@ -69,8 +77,7 @@ const TableHeader = () => {
     return <TableRow>
         <TableCell><Typography>S.N</Typography>
         </TableCell>
-        <TableCell><Typography>Code</Typography>
-        </TableCell>
+
         <TableCell><Typography>First Name</Typography>
         </TableCell>
         <TableCell>
@@ -79,7 +86,8 @@ const TableHeader = () => {
                 <Typography>Contact</Typography>
             </Stack>
         </TableCell>
-
+        <TableCell><Typography>Code</Typography>
+        </TableCell>
         <TableCell align='center'>
             <Stack direction='row' gap={1}>
                 <EmailOutlinedIcon />

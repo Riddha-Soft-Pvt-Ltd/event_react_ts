@@ -27,4 +27,4 @@ export const httpSearchVisitors = async (search: string) => {
 
 export const httpSaveVisitors = (data: any) => axios.post(saveVisitors, data);
 export const httpEditVisitors = (data: any) => axios.post(editVisitors, data);
-export const httpDeleteVisitors = (data: any) => axios.delete(deleteVisitors);
+// export const httpDeleteVisitors = (data: any) => axios.delete(deleteVisitors);

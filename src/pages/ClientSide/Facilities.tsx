@@ -32,13 +32,17 @@ const Facilities = () => {
 
     const facilityCheckIn = () => {
         axios.post(visitorsFacilityCheckInCheckOut, {
-            visitorId: content,
+            code: content,
             facilityId: value
         }, { headers: customHeader })
             .then((resp) => {
                 setresponseData(resp.data)
                 if (responseData) {
                     setmodelOpen(true)
+                    setTimeout(() => {
+                        setmodelOpen(false);
+                        setContent("")
+                    }, 2000);
                 }
             })
             .catch((error) => { setresponseData(error) })

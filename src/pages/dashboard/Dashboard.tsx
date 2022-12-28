@@ -7,6 +7,10 @@ import NewCardholderModal from './NewCardholderModal';
 import { httpGetVisitors, httpSearchVisitors } from '../../http/visitors';
 import TableSeamer from '../../components/loader/TableSeamer';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { deleteVisitors } from '../../http/endpoints/endpoints';
+import axios from 'axios';
+import { customHeader } from '../../utils/token.utils';
+import { toast } from 'react-toastify';
 
 const BoxStyle = styled(Box)`
       display:flex;
@@ -56,12 +60,31 @@ const Dashboard = () => {
     setLoadMore(false);
   }
 
+  const deleteUser = async (id: string) => {
+    console.log('deleting user');
+    await axios.delete(deleteVisitors(id), { headers: customHeader }).then((response) => {
+      if (response && response.data && response.data.success) {
+        fetchInitialVisitors();
+      }
+      console.log(response, 'deleting user');
+    }).catch((err) => {
+      toast.error(err.message);
+    });
+  }
+
   useEffect(() => {
     setLoading(true);
-    getAllVisitors(skipTake.skip, skipTake.take);
+    fetchInitialVisitors();
+    setLoading(false);
     return () => {
     }
   }, [])
+
+  const fetchInitialVisitors = async () => {
+    setSkipTake({ skip: 0, take: 10 });
+    const visitorsData = await httpGetVisitors(0, 10);
+    setVisitors(visitorsData);
+  }
 
   return (
     <>
@@ -82,8 +105,8 @@ const Dashboard = () => {
             </Box>
           </Grid>
         </Grid>
-        <NewCardholderModal open={open} setOpen={setOpen} getAllVisitors={() => getAllVisitors(0, 10)} />
-        <Grid container>
+        <NewCardholderModal open={open} setOpen={setOpen} getAllVisitors={fetchInitialVisitors} />
+        {/* <Grid container>
           <Grid item xs={4}>
             <TextField label="search" onChange={(e) => setSearchText(e.target.value)}
               variant="outlined" sx={{ marginLeft: '20px' }} onKeyDown={(event) => {
@@ -100,11 +123,12 @@ const Dashboard = () => {
               await getAllVisitors(0, 10)
             }}> close</div>
           </Grid>
-        </Grid>
+        </Grid> */}
         {loading ?
           <TableSeamer /> :
           <CardholderTable
             searchVisitors={searchVisitors}
+            deleteUser={deleteUser}
             visitors={visitors}
             modelOpen={modelOpen}
             setModelOpen={setModelOpen} />}

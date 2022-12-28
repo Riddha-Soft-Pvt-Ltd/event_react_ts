@@ -38,8 +38,8 @@ export default function FormSection() {
                     const cookie = new Cookies();
                     cookie.set("isLoggedIn", "true", { maxAge: 36000 }); // 60 minutes 3600s
                     cookie.set('token', response.data.data.token)
-                    navigate("/");
                     toast.success('Login successfully')
+                    navigate("/");
                 }
                 else {
                     toast.error('Invalid username and password');

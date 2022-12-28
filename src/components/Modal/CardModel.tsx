@@ -2,7 +2,7 @@ import { Button, Modal } from '@mui/material'
 import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { ReactInstance, useRef } from 'react';
-import QRCode from 'react-qr-code'
+import Barcode from 'react-barcode'
 
 import ReactToPrint from 'react-to-print';
 
@@ -44,7 +44,7 @@ export default function CardModel({ modelOpen, setModelOpen, cardholders }: { mo
             <Typography align='center' variant="h6" component="h6" color={"white"} fontWeight={"700"}>Participant</Typography>
           </Box>
           <Box display={"flex"} flexDirection="column" justifyContent={"center"} alignItems="center">
-            <QRCode style={{ height: "100px", width: "100px", padding: "20px" }} value={cardholders.code} />
+            <Barcode value={cardholders.code} />
             {/* <Typography variant="h6" fontWeight={"700"}>{cardholders.code}</Typography> */}
             <Box color="#AD1DEB" textAlign={"center"}>
               <Typography variant="h6" fontWeight={"700"}>{cardholders.name}</Typography>

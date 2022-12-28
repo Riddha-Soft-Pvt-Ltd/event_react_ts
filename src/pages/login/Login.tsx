@@ -17,7 +17,7 @@ position:absolute;
 const Login = () => {
   return (
     <BoxContainer>
-      <FormSection/>
+      <FormSection />
     </BoxContainer>
   )
 }

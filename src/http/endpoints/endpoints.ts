@@ -1,14 +1,14 @@
-export const BaseUrl = "http://202.51.74.187:8002/";
+// export const BaseUrl = "http://202.51.74.187:8002/";
 // export const BaseUrl = "http://192.168.1.73:8002/";
 
-// export const BaseUrl = "http://192.168.20.103:8002/";
+export const BaseUrl = "http://192.168.20.103:8002/";
 
 export const adminLoginUrl = BaseUrl + "admin/auth/login";
 
 export const saveVisitors = BaseUrl + "visitor/register";
 export const getVisitors = (skip: string | number, take: string | number) =>
   BaseUrl + `visitor/get-all?skip=${skip}&take=${take}`;
-export const deleteVisitors = BaseUrl + "";
+export const deleteVisitors = (id: string) => BaseUrl + `visitor/delete?id=${id}`;
 export const editVisitors = BaseUrl + "";
 export const searchVisitors = (search: string) => BaseUrl + `visitor/search?name=${search}`;
 
