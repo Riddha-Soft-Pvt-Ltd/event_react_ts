@@ -23,6 +23,7 @@ import axios from 'axios';
 import { deleteVisitors } from '../../http/endpoints/endpoints';
 import { customHeader } from '../../utils/token.utils';
 import Barcode from 'react-barcode';
+import DeleteModal from './DeleteModal';
 
 const CardholderTable = ({ visitors, setModelOpen, modelOpen, searchVisitors, deleteUser }: any) => {
     return (
@@ -58,15 +59,15 @@ export default CardholderTable
 
 const ActionCollection = ({ userID, cardholders, deleteUser }: { deleteUser: any, userID: string, cardholders: any, getCardHolderData: any, setModelOpen: any, modelOpen: any }) => {
     const [open, setOpen] = useState(false);
+    const [deleteModal,setDeleteModal] = useState<boolean>(false);
     return (
         <Stack direction={'row'} spacing={1} >
             <ButtonGroup variant='text'>
                 <Button color='success' onClick={() => setOpen(true)}  ><VisibilityOutlinedIcon /></Button>
                 {/* <Button color='primary'  ><BorderColorOutlinedIcon /></Button> */}
-                <Button color='error' onClick={() => {
-                    deleteUser(userID)
-                }}><DeleteForeverOutlinedIcon /></Button>
+                <Button color='error' onClick={() => {setDeleteModal(true)}}><DeleteForeverOutlinedIcon /></Button>
                 <CardModel cardholders={cardholders} modelOpen={open} setModelOpen={setOpen} />
+                <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} deleteUser={deleteUser} userID={userID} />
             </ButtonGroup>
         </Stack>
     )

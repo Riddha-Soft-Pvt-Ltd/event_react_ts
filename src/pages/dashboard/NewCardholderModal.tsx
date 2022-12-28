@@ -226,7 +226,7 @@ const ContactForm = ({ register, control, errors }: { register: any, control: an
 
                             <TextField
                                 label='Phone'
-                                type={'tel'}
+                                type={'number'}
                                 sx={{ width: '50%' }}
                                 id="contact"
                                 onChange={onChange}

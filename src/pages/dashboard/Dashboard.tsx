@@ -61,7 +61,7 @@ const Dashboard = () => {
   }
 
   const deleteUser = async (id: string) => {
-    console.log('deleting user');
+    // console.log('deleting user');
     await axios.delete(deleteVisitors(id), { headers: customHeader }).then((response) => {
       if (response && response.data && response.data.success) {
         fetchInitialVisitors();
