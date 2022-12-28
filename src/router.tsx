@@ -20,8 +20,8 @@ const Router = () =>{
         <Box sx={{padding: "40px 20px 10px 20px"}}>
             <Routes>
                 <Route path='/' element={<Dashboard/>}/>
-                <Route path='/dashboard' element={<Dashboard/>}/>
-                <Route path='customers' element={<Facility/>}/>
+                <Route path='/visitors' element={<Dashboard/>}/>
+                <Route path='/facilities' element={<Facility/>}/>
                 
             </Routes>
         </Box>

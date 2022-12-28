@@ -121,7 +121,7 @@ const Dashboard = () => {
             justifyContent: "center"
           }} onClick={() => {
             setLoadMore(true);
-            const skip = 0; const take = 10;
+            const skip = (skipTake.skip + 10); const take = 10;
             setSkipTake({ skip: skip, take: take });
             getAllVisitors(skip, take);
           }}>

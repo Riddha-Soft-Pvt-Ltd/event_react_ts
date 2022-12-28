@@ -15,38 +15,40 @@ const Check_In_Out = () => {
     const [data, setdata] = useState<any>('');
     const [responseData, setresponse] = useState('')
     const [modelOpen, setmodelOpen] = useState(false)
-    console.log(responseData)
+
     const handleChange = (event: any) => {
         setFocus(false);
         setValue(event.target.value as string);
         setFocus(true);
     };
 
-    if (modelOpen) {
-        return (
-            <MessageModal modelOpen={modelOpen} setmodelOpen={setmodelOpen} responseData={responseData} />
-        )
-    }
-
     const visitorsGateCheckIn = async () => {
-        const response = await httpVisitorFacilitiesCheckIn({ visitorId: data });
+        const response = await httpVisitorFacilitiesCheckIn({ code: data });
         setresponse(response)
         if (response) {
             setmodelOpen(true)
+            setTimeout(() => {
+                setmodelOpen(false);
+                setdata("");
+            }, 2000);
         }
     }
 
     const visitorsGateCheckOut = async () => {
-        const response = await httpVisitorFacilitiesCheckOut({ visitorId: data });
+        const response = await httpVisitorFacilitiesCheckOut({ code: data });
         setresponse(response)
-
         if (response) {
             setmodelOpen(true)
+            setTimeout(() => {
+                setmodelOpen(false);
+                setdata("");
+            }, 2000);
         }
     }
 
     return (
         <>
+            <MessageModal modelOpen={modelOpen} setmodelOpen={setmodelOpen} responseData={responseData} />
             <Grid container>
                 <GoBack />
                 <Grid item xs={12} sx={{ background: '#F4FAFF' }}>
@@ -73,7 +75,7 @@ const Check_In_Out = () => {
                             if (event.key === "Enter") {
                                 (value === "1") ? visitorsGateCheckIn() : visitorsGateCheckOut()
                             }
-                        }} onChange={(e) => setdata(e.target.value)} />
+                        }} value={data} onChange={(e) => setdata(e.target.value)} />
                     </Stack>
                 </Grid>
             </Grid>
@@ -84,7 +86,7 @@ const Check_In_Out = () => {
 export default Check_In_Out
 
 export const GoBack = () => {
-    return <Link to={'/dashboard'} style={{ textDecoration: 'none', position: "absolute", top: "0", left: "1rem" }} >
+    return <Link to={'/visitors'} style={{ textDecoration: 'none', position: "absolute", top: "0", left: "1rem" }} >
         <Stack direction={'row'} alignItems='center'>
             <KeyboardBackspaceIcon color={'primary'} />
             <Typography variant='h5' color={'primary'} sx={{ padding: '10px' }}>Back</Typography>

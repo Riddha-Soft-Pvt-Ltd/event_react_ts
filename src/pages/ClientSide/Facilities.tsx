@@ -1,7 +1,5 @@
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import SideImage2 from '../../assets/images/SideImage2.png';
 import Lottie from "lottie-react";
 import Scanner from '../../assets/scanner.json'
 //mui icons
@@ -12,49 +10,27 @@ import { visitorsFacilityCheckInCheckOut } from '../../http/endpoints/endpoints'
 import { customHeader } from '../../utils/token.utils';
 import MessageModal from '../../components/Modal/MessageModal';
 
-const BoxContainer = styled(Box)`
-height:100%;
-width:100%;
-background-image:url(${SideImage2});
-background-size:50vw auto;
-background-repeat: no-repeat;
-background-position:center;
-`
-
 const Facilities = () => {
     const [value, setValue] = useState('');
     const [content, setContent] = useState<any>('');
-    const [facilities, setFacilities] = useState([]);
+    const [facilities, setFacilities] = useState<any[]>([]);
     const [modelOpen, setmodelOpen] = useState(false);
     const [responseData, setresponseData] = useState<any>("")
-    console.log(responseData)
-
-
-
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (event: any) => {
         setValue(event.target.value as string);
     };
 
     const getFacilities = async () => {
-        const data = await httpGetFacilities();
+        setLoading(true);
+        const data: any[] = await httpGetFacilities();
         setFacilities(data);
+        setValue(data[0]?._id)
+        setLoading(false);
     }
 
-    useEffect(() => {
-        getFacilities();
-        return () => {
-        }
-    }, [])
-    if (modelOpen) {
-        return (
-            <MessageModal modelOpen={modelOpen} setmodelOpen={setmodelOpen} responseData={responseData} />
-        )
-    }
-
-
-
-    const handleSubmit = () => {
+    const facilityCheckIn = () => {
         axios.post(visitorsFacilityCheckInCheckOut, {
             visitorId: content,
             facilityId: value
@@ -65,15 +41,18 @@ const Facilities = () => {
                     setmodelOpen(true)
                 }
             })
-            .catch((error) => {
-                setresponseData(error)
-
-            })
+            .catch((error) => { setresponseData(error) })
     }
 
+    useEffect(() => {
+        getFacilities();
+        return () => {
+        }
+    }, [])
 
     return (
         <div onClick={() => { }}>
+            <MessageModal modelOpen={modelOpen} setmodelOpen={setmodelOpen} responseData={responseData} />
             <Grid container>
                 <GoBack />
                 <Grid item xs={12} sx={{ background: '#F4FAFF' }}>
@@ -82,8 +61,7 @@ const Facilities = () => {
                         <Lottie style={{ width: '250px', height: '250px' }} animationData={Scanner} loop={true} />
                         {/* Dropdown component  */}
                         <Typography variant={'h3'} textAlign={'center'}>Scan your Card </Typography>
-
-                        <Stack sx={{ width: '100%' }} spacing={2} justifyContent='center' alignItems={'center'}>
+                        {loading ? <>loading</> : <Stack sx={{ width: '100%' }} spacing={2} justifyContent='center' alignItems={'center'}>
                             <FormControl sx={{ width: '20%' }}>
                                 <InputLabel id="check">Choose Facility</InputLabel>
                                 <Select
@@ -92,25 +70,26 @@ const Facilities = () => {
                                     value={value}
                                     onChange={handleChange}
                                     label='Choose Facility'
+                                    defaultValue={facilities[0]?._id}
                                     fullWidth
                                 >
                                     {facilities.map((facility: any, index) => {
                                         return <MenuItem key={index} value={facility._id}>{facility.name}</MenuItem>
                                     })}
-
                                 </Select>
                             </FormControl>
-
-
-                            <TextField onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleSubmit();
-                                }
-                            }} sx={{ width: '20%' }} value={content} label='Scan your Card' autoFocus onChange={(e) => {
-                                setContent(e.target.value);
-                            }} />
-                        </Stack>
-
+                            <TextField
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') { facilityCheckIn(); }
+                                }}
+                                sx={{ width: '20%' }}
+                                value={content}
+                                label='Scan your Card'
+                                autoFocus
+                                onChange={(e) => {
+                                    setContent(e.target.value);
+                                }} />
+                        </Stack>}
                     </Stack>
                 </Grid>
             </Grid>

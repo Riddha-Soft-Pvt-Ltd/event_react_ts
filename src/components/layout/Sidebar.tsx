@@ -113,8 +113,8 @@ const NavigationOptions = () => {
     }, [location]);
     return (
         <List sx={{ width: "100%", padding: "0 10px", gap: "5px" }}>
-            <CustomListItem link="dashboard" path={path} icon={<DashboardIcon />} label="Visitors" />
-            <CustomListItem link="customers" path={path} icon={<PeopleAltIcon />} label="Facilties" />
+            <CustomListItem link="visitors" path={path} icon={<DashboardIcon />} label="Visitors" />
+            <CustomListItem link="facilities" path={path} icon={<PeopleAltIcon />} label="Facilties" />
             <CustomListItem link="vistor/checkin" path={path} icon={<CheckCircleOutlineIcon />} label="CheckIn/CheckOut" />
             <CustomListItem link="vistor/facility" path={path} icon={<AodIcon />} label="Check Facilities" />
         </List>
