@@ -24,8 +24,9 @@ import { deleteVisitors } from '../../http/endpoints/endpoints';
 import { customHeader } from '../../utils/token.utils';
 import Barcode from 'react-barcode';
 import DeleteModal from './DeleteModal';
+import UpdateVisitorModal from './UpdateVisitorModal';
 
-const CardholderTable = ({ visitors, setModelOpen, modelOpen, searchVisitors, deleteUser }: any) => {
+const CardholderTable = ({ visitors, setModelOpen, modelOpen, searchVisitors, deleteUser,updateVisitor }: any) => {
     return (
         <TableContainer component={Paper}>
             <Table>
@@ -44,7 +45,7 @@ const CardholderTable = ({ visitors, setModelOpen, modelOpen, searchVisitors, de
                                 <TableCell >{visitor.clubName}</TableCell>
                                 <TableCell >{visitor.designation}</TableCell>
                                 <TableCell align='center'>
-                                    <ActionCollection modelOpen={modelOpen} deleteUser={deleteUser} setModelOpen={setModelOpen} cardholders={visitor} userID={visitor._id} getCardHolderData={() => { }} /></TableCell>
+                                    <ActionCollection modelOpen={modelOpen} deleteUser={deleteUser} updateVisitor={updateVisitor} setModelOpen={setModelOpen} cardholders={visitor} userID={visitor._id} getCardHolderData={() => { }} /></TableCell>
                             </TableRow>
                         )
                     }) : <p> No Visitors Data</p>
@@ -57,17 +58,19 @@ const CardholderTable = ({ visitors, setModelOpen, modelOpen, searchVisitors, de
 
 export default CardholderTable
 
-const ActionCollection = ({ userID, cardholders, deleteUser }: { deleteUser: any, userID: string, cardholders: any, getCardHolderData: any, setModelOpen: any, modelOpen: any }) => {
+const ActionCollection = ({ userID, cardholders, deleteUser,updateVisitor }: { deleteUser: any, userID: string, cardholders: any, getCardHolderData: any, setModelOpen: any, modelOpen: any,updateVisitor:any }) => {
     const [open, setOpen] = useState(false);
     const [deleteModal, setDeleteModal] = useState<boolean>(false);
+    const [updateModal,setUpdateModal] = useState<boolean>(false);
     return (
         <Stack direction={'row'} spacing={1} >
             <ButtonGroup variant='text'>
                 <Button color='success' onClick={() => setOpen(true)}  ><VisibilityOutlinedIcon /></Button>
-                {/* <Button color='primary'  ><BorderColorOutlinedIcon /></Button> */}
+                <Button color='primary' onClick ={() => setUpdateModal(true)}  ><BorderColorOutlinedIcon /></Button>
                 <Button color='error' onClick={() => { setDeleteModal(true) }}><DeleteForeverOutlinedIcon /></Button>
                 <CardModel cardholders={cardholders} modelOpen={open} setModelOpen={setOpen} />
                 <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} deleteUser={deleteUser} userID={userID} />
+                <UpdateVisitorModal cardholders={cardholders} updateModal={updateModal} setUpdateModal={setUpdateModal} updateVisitor={updateVisitor} />
             </ButtonGroup>
         </Stack>
     )
