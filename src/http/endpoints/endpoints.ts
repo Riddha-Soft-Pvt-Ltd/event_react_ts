@@ -1,7 +1,7 @@
-export const BaseUrl = "http://202.51.74.187:8002/";
+// export const BaseUrl = "http://202.51.74.187:8002/";
 // export const BaseUrl = "http://192.168.1.73:8002/";
 
-// export const BaseUrl = "http://192.168.20.103:8002/";
+export const BaseUrl = "http://192.168.20.103:8002/";
 
 export const adminLoginUrl = BaseUrl + "admin/auth/login";
 

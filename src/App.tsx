@@ -9,6 +9,7 @@ import Layout from './components/layout/Layout';
 import Check_In_Out from './pages/ClientSide/Check_In_Out';
 import Facilities from './pages/ClientSide/Facilities';
 import Login from './pages/login/Login';
+import Test from './Test';
 
 
 //styled component 

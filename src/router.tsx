@@ -8,6 +8,7 @@ import {Box} from '@mui/material'
 
 // react router
 import { Route , Routes } from "react-router-dom";
+import Test from './Test';
 
 
 
@@ -22,7 +23,7 @@ const Router = () =>{
                 <Route path='/' element={<Dashboard/>}/>
                 <Route path='/visitors' element={<Dashboard/>}/>
                 <Route path='/facilities' element={<Facility/>}/>
-                
+                <Route path='/hello' element={<Test/>} />
             </Routes>
         </Box>
     )
