@@ -1,16 +1,18 @@
 // export const BaseUrl = "http://202.51.74.187:8002/";
-export const BaseUrl = "http://192.168.1.73:8002/";
+// export const BaseUrl = "http://192.168.1.159:8002/";
 
-// export const BaseUrl = "http://192.168.1.129:8002/";
+export const BaseUrl = "http://192.168.20.48:8002/";
 
 export const adminLoginUrl = BaseUrl + "admin/auth/login";
 
 export const saveVisitors = BaseUrl + "visitor/register";
 export const getVisitors = (skip: string | number, take: string | number) =>
   BaseUrl + `visitor/get-all?skip=${skip}&take=${take}`;
-export const deleteVisitors = (id: string) => BaseUrl + `visitor/delete?id=${id}`;
+export const deleteVisitors = (id: string) =>
+  BaseUrl + `visitor/delete?id=${id}`;
 export const editVisitors = (id: string) => BaseUrl + `visitor/update?id=${id}`;
-export const searchVisitors = (search: string) => BaseUrl + `visitor/search?name=${search}`;
+export const searchVisitors = (search: string) =>
+  BaseUrl + `visitor/search?name=${search}`;
 
 export const saveFacilities = BaseUrl + "facility/create";
 export const getFacilities = BaseUrl + "facility/get-all";
@@ -23,4 +25,8 @@ export const visitorsCheckInCheckOut = BaseUrl + "";
 
 export const checkin = BaseUrl + "gate-checkin/check-in";
 export const checkout = BaseUrl + "gate-checkin/check-out";
-export const visitorsFacilityCheckInCheckOut = BaseUrl + "facility-checkin/check-in";
+export const visitorsFacilityCheckInCheckOut =
+  BaseUrl + "facility-checkin/check-in";
+export const visitorsReport = BaseUrl + "visitor/report";
+export const singleVisitorReport =
+  BaseUrl + "visitor/report-visitor?code=";

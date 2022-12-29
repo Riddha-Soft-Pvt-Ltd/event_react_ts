@@ -8,6 +8,8 @@ import Dashboard from './pages/dashboard/Dashboard';
 // react router
 import { Route, Routes } from "react-router-dom";
 import VisitorContextContainer from './contexts/VisitorContext';
+import Report from './components/report/Report';
+import CustomerReport from './components/report/CustomerReport';
 
 const Router = () => {
     return (
@@ -17,6 +19,8 @@ const Router = () => {
                     <Route path='/' element={<Dashboard />} />
                     <Route path='/visitors' element={<Dashboard />} />
                     <Route path='/facilities' element={<Facility />} />
+                    <Route path='/report' element={<Report />} />
+                    <Route path='/singlereport' element={<CustomerReport />} />
                 </Routes>
             </Box>
         </VisitorContextContainer>
