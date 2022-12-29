@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import { customHeader } from "../utils/token.utils";
 import { deleteFacilities, editFacilities, getFacilities, saveFacilities } from "./endpoints/endpoints";
 
@@ -22,9 +23,14 @@ export const httpSaveFacilities = async (data: any) => {
     await axios.post(saveFacilities, data, { headers: customHeader() }).then((response) => {
         if (response && response.data && response.data.success) {
             success = response.data.success;
+            toast.success(response.data.message)
+        }
+        else{
+            toast.success(response.data.message ?? "")
         }
         return success = response.data.success;
-    }).catch((err) => { success = false })
+    }
+    ).catch((err) => { success = false })
     return success;
 };
 
@@ -33,8 +39,13 @@ export const httpEditFacilities = async (id: string, data: any) => {
     await axios.post(editFacilities(id), data, { headers: customHeader() }).then((response) => {
         if (response && response.data && response.data.success) {
             success = response.data.success;
+            toast.info(response.data.message)
+        }
+        else{
+            toast.info(response.data.message ?? "")
         }
         return success = response.data.success;
+        
     }).catch((err) => { success = false })
     return success;
 }
@@ -44,6 +55,10 @@ export const httpDeleteFacilities = async (id: string) => {
     await axios.delete(deleteFacilities(id), { headers: customHeader() }).then((response) => {
         if (response && response.data && response.data.success) {
             success = response.data.success;
+            toast.error(response.data.message)
+        }
+        else{
+            toast.error(response.data.message ?? "")
         }
         return success = response.data.success;
     }).catch((err) => { success = false })
