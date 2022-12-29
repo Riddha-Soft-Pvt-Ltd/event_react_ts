@@ -66,6 +66,7 @@ const NewCardholderModal = ({ open, setOpen, }: { open: boolean, setOpen: (value
             })
             .finally(() => {
                 handleClose();
+                reset();
             })
     }
 

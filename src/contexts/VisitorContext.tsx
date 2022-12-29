@@ -58,6 +58,7 @@ const VisitorContextContainer = ({ children }: { children: any }) => {
                     searchVisitors();
                 }
             }
+            toast.error(response.data.message)
         }).catch((err) => {
             toast.error(err.message);
         });
