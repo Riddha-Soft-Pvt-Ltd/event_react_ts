@@ -37,7 +37,7 @@ const Facilities = () => {
         }, { headers: customHeader() })
             .then((resp) => {
                 setresponseData(resp.data)
-                if (responseData) {
+                if (resp && resp.data) {
                     setmodelOpen(true)
                     setTimeout(() => {
                         setmodelOpen(false);

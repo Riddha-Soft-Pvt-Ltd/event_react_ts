@@ -25,13 +25,10 @@ export default function Report() {
     }, [])
 
     const getVisitorDetails = () => {
-
         axios.get(singleVisitorReport + visitor, { headers: { Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhamVzaEBnbWFpbC5jb20iLCJpYXQiOjE2NzIzMDY5MzB9.xIx-2hh6vFXVj1yepWPtbYEWKneV0DnYkrmeC1dgge8" } }).then((res) => {
             setsingleReport(res.data?.data ?? [])
         }).catch((err) => {
-
         })
-
     }
 
     return (

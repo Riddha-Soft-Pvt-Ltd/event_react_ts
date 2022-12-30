@@ -117,6 +117,7 @@ const NavigationOptions = () => {
             <CustomListItem link="facilities" path={path} icon={<PeopleAltIcon />} label="Facilties" />
             <CustomListItem link="vistor/checkin" path={path} icon={<CheckCircleOutlineIcon />} label="CheckIn/CheckOut" />
             <CustomListItem link="vistor/facility" path={path} icon={<AodIcon />} label="Check Facilities" />
+            <CustomListItem link="report" path={path} icon={<AodIcon />} label="Checkin Report" />
         </List>
     )
 }
