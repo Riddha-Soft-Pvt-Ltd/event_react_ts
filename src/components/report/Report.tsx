@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { Form } from 'react-router-dom';
 import { singleVisitorReport, visitorsReport } from '../../http/endpoints/endpoints';
 import { httpgetReport } from '../../http/visitors';
+import { customHeader } from '../../utils/token.utils';
 
 export default function Report() {
 
@@ -25,7 +26,7 @@ export default function Report() {
     }, [])
 
     const getVisitorDetails = () => {
-        axios.get(singleVisitorReport + visitor, { headers: { Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhamVzaEBnbWFpbC5jb20iLCJpYXQiOjE2NzIzMDY5MzB9.xIx-2hh6vFXVj1yepWPtbYEWKneV0DnYkrmeC1dgge8" } }).then((res) => {
+        axios.get(singleVisitorReport + visitor, { headers: customHeader() }).then((res) => {
             setsingleReport(res.data?.data ?? [])
         }).catch((err) => {
         })

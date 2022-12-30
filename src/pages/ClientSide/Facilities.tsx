@@ -42,7 +42,7 @@ const Facilities = () => {
                     setTimeout(() => {
                         setmodelOpen(false);
                         setContent("")
-                    }, 4000);
+                    }, 1000);
                 }
             })
             .catch((error) => { setresponseData(error) })

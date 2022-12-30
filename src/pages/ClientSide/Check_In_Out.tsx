@@ -29,7 +29,7 @@ const Check_In_Out = () => {
             setTimeout(() => {
                 setmodelOpen(false);
                 setdata("");
-            }, 4000);
+            }, 1000);
         }
     }
 
@@ -41,7 +41,7 @@ const Check_In_Out = () => {
             setTimeout(() => {
                 setmodelOpen(false);
                 setdata("");
-            }, 4000);
+            }, 1000);
         }
     }
 
