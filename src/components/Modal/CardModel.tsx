@@ -16,13 +16,8 @@ export default function CardModel({ modelOpen, setModelOpen, cardholders }: { mo
   const Close = () => {
     setModelOpen(false)
   }
-
-
-
-
-
   return (
-    <Modal open={modelOpen} onClose={Close} sx={{ height: "70%", width: "100%", padding: "2rem", border: "none", display: "flex", justifyContent: "center" }}>
+    <Modal open={modelOpen} onClose={Close} sx={{ width: "100%", height: "500px", padding: "2rem", border: "none", display: "flex", justifyContent: "center" }}>
       <Box sx={{
         flexDirection: "column",
         background: "		#E0E0E0",
@@ -34,25 +29,21 @@ export default function CardModel({ modelOpen, setModelOpen, cardholders }: { mo
       }}>
         <Box
           ref={componentRef}
-
           sx={{
-            borderRadius: "10px", height: "380px", width: "240px", background: "white", boxShadow: 12, display: "flex"
-          }}>
-
-
+            borderRadius: "10px", height: "55Vh", width: "100%", boxShadow: 12, display: "flex", justifyContent: "center", alignItems: "center"
+          }}
+        >
           <Box display={"flex"} flexDirection="column" gap={3} alignItems="center" justifyContent={"center"} padding="16px" >
             <Barcode height={80} width={1.2} value={cardholders.code} />
-
             <Box color="#AD1DEB" textAlign={"center"}>
               <Typography variant="h6" fontWeight={"700"}>{cardholders.name}</Typography>
               <Typography variant="body2" fontWeight={"600"} >{cardholders.designation}</Typography>
               <Typography fontWeight={"500"} variant='subtitle2' marginTop={"5px"} >{cardholders.clubName}</Typography>
             </Box>
           </Box>
-
         </Box>
         {/*  */}
-        <Box sx={{ display: "flex", justifyContent: "space-around", marginTop: "20px", }}>
+        <Box sx={{ display: "flex", padding: "5px", justifyContent: "space-around", marginTop: "20px", }}>
           <ReactToPrint
             trigger={() => <Button variant="contained" sx={{ background: "#AD1DEB", color: "white" }}>Print</Button>
             }
