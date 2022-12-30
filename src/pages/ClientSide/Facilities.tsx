@@ -32,7 +32,7 @@ const Facilities = () => {
 
     const facilityCheckIn = () => {
         axios.post(visitorsFacilityCheckInCheckOut, {
-            code: content,
+            code: content.toUpperCase(),
             facilityId: value
         }, { headers: customHeader() })
             .then((resp) => {

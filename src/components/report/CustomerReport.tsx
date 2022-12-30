@@ -11,8 +11,6 @@ export default function CustomerReport() {
         const data = await httpgetSingleReport();
         setreport(data);
     }
-    console.log(report, "new")
-
     useEffect(() => {
         getReport();
         return () => {

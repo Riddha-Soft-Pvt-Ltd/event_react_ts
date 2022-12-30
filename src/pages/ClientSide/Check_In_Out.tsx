@@ -22,7 +22,7 @@ const Check_In_Out = () => {
     };
 
     const visitorsGateCheckIn = async () => {
-        const response = await httpVisitorFacilitiesCheckIn({ code: data });
+        const response = await httpVisitorFacilitiesCheckIn({ code: data.toUpperCase() });
         setresponse(response)
         if (response) {
             setmodelOpen(true)
@@ -34,7 +34,7 @@ const Check_In_Out = () => {
     }
 
     const visitorsGateCheckOut = async () => {
-        const response = await httpVisitorFacilitiesCheckOut({ code: data });
+        const response = await httpVisitorFacilitiesCheckOut({ code: data.toUpperCase() });
         setresponse(response)
         if (response) {
             setmodelOpen(true)
