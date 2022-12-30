@@ -4,20 +4,24 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Form } from 'react-router-dom';
 import { singleVisitorReport, visitorsReport } from '../../http/endpoints/endpoints';
-import { httpgetReport } from '../../http/visitors';
-import { customHeader } from '../../utils/token.utils';
+import { httpgetReport, httpGetVisitors } from '../../http/visitors';
 
 export default function Report() {
 
     const [report, setreport] = useState([])
     const [visitor, setvisitor] = useState('')
     const [singleReport, setsingleReport] = useState([])
-    console.log(singleReport, "single reprot")
+    const [skipTake, setSkipTake] = useState({ skip: 0, take: 10 });
+
+
     const getReport = async () => {
-        const data = await httpgetReport();
-        setreport(data);
+        const dataCont: any = await httpgetReport(skipTake.skip, skipTake.take);
+        setreport(dataCont.data);
     }
 
+    useEffect(() => {
+        getReport();
+    }, [skipTake])
     useEffect(() => {
         getReport();
         getVisitorDetails()
@@ -26,10 +30,17 @@ export default function Report() {
     }, [])
 
     const getVisitorDetails = () => {
-        axios.get(singleVisitorReport + visitor, { headers: customHeader() }).then((res) => {
+
+        axios.get(singleVisitorReport + visitor, { headers: { Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhamVzaEBnbWFpbC5jb20iLCJpYXQiOjE2NzIzMDY5MzB9.xIx-2hh6vFXVj1yepWPtbYEWKneV0DnYkrmeC1dgge8" } }).then((res) => {
             setsingleReport(res.data?.data ?? [])
         }).catch((err) => {
+
         })
+
+    }
+
+    const handleLoadMore = () => {
+        setSkipTake({ skip: 0, take: skipTake.take + 10 })
     }
 
     return (
@@ -41,6 +52,7 @@ export default function Report() {
                 <Button variant="contained" onClick={getVisitorDetails}>Search</Button>
             </Box>
             <Tablee report={report} singleReport={singleReport} />
+            <Button onClick={handleLoadMore}>Load More</Button>
         </Box>
     )
 }
@@ -64,7 +76,10 @@ export const Tablee = ({ report, singleReport }: any) => {
                         <TableCell>S.N</TableCell>
                         <TableCell align="right">Name</TableCell>
                         <TableCell align="right">Code</TableCell>
-                        <TableCell align="right">Date</TableCell>
+                        <TableCell align="right">CheckIn Date</TableCell>
+                        <TableCell align="right">CheckIn Time</TableCell>
+                        <TableCell align="right">CheckOut Date</TableCell>
+                        <TableCell align="right">CheckOut Time</TableCell>
                         <TableCell align="right">Facilites Used </TableCell>
                     </TableRow>
                 </TableHead>
@@ -80,7 +95,10 @@ export const Tablee = ({ report, singleReport }: any) => {
                                     </TableCell>
                                     <TableCell align="right">{datas?.name}</TableCell>
                                     <TableCell align="right">{datas?.code}</TableCell>
-                                    <TableCell align="right">{datas?.date}</TableCell>
+                                    <TableCell align="right">{datas?.checkInDate}</TableCell>
+                                    <TableCell align="right">{datas?.checkOutTime}</TableCell>
+                                    <TableCell align="right">{datas?.checkOutDate}</TableCell>
+                                    <TableCell align="right">{datas?.checkOutTime}</TableCell>
                                     <TableCell align="right">{getAllFacilitiesUsed(datas?.facilities_used)}</TableCell>
                                 </TableRow>
                             </TableBody>

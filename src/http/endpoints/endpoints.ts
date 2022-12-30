@@ -1,7 +1,7 @@
-export const BaseUrl = "http://202.51.74.187:8002/";
+// export const BaseUrl = "http://202.51.74.187:8002/";
 // export const BaseUrl = "http://192.168.1.159:8002/";
 
-// export const BaseUrl = "http://192.168.20.103:8002/";
+export const BaseUrl = "http://192.168.20.48:8002/";
 
 export const adminLoginUrl = BaseUrl + "admin/auth/login";
 
@@ -27,6 +27,6 @@ export const checkin = BaseUrl + "gate-checkin/check-in";
 export const checkout = BaseUrl + "gate-checkin/check-out";
 export const visitorsFacilityCheckInCheckOut =
   BaseUrl + "facility-checkin/check-in";
-export const visitorsReport = BaseUrl + "visitor/report";
-export const singleVisitorReport =
-  BaseUrl + "visitor/report-visitor?code=";
+export const visitorsReport = (skip: any, take: any) =>
+  BaseUrl + `visitor/report?skip=${skip}&take=${take}`;
+export const singleVisitorReport = BaseUrl + "visitor/report-visitor?code=";

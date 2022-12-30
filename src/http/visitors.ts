@@ -45,10 +45,10 @@ export const httpSearchVisitors = async (search: string) => {
   return visitors;
 };
 
-export const httpgetReport = async () => {
+export const httpgetReport = async (skip: any, take: any) => {
   let report: never[] = [];
   await axios
-    .get(visitorsReport, { headers: customHeader() })
+    .get(visitorsReport(skip, take), { headers: customHeader() })
     .then((response) => {
       if (response && response.data && response.data.success) {
         report = response.data.data;
