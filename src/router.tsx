@@ -10,6 +10,7 @@ import { Route, Routes } from "react-router-dom";
 import VisitorContextContainer from './contexts/VisitorContext';
 import Report from './components/report/Report';
 import CustomerReport from './components/report/CustomerReport';
+import Packages from './pages/packages';
 
 const Router = () => {
     return (
@@ -21,6 +22,7 @@ const Router = () => {
                     <Route path='/facilities' element={<Facility />} />
                     <Route path='/report' element={<Report />} />
                     <Route path='/singlereport' element={<CustomerReport />} />
+                    <Route path='/packages' element={<Packages />} />
                 </Routes>
             </Box>
         </VisitorContextContainer>

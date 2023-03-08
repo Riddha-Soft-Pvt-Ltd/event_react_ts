@@ -17,7 +17,7 @@ export default function Report() {
 
     const getReport = async () => {
         const dataCont: any = await httpgetReport(skipTake.skip, skipTake.take);
-        setreport(dataCont.data);
+        setreport(dataCont.data ?? []);
     }
 
     useEffect(() => {
@@ -97,7 +97,7 @@ export const Tablee = ({ report, singleReport }: any) => {
                                     </TableCell>
                                     <TableCell>{datas?.name}</TableCell>
                                     <TableCell>{datas?.code}</TableCell>
-                                    <TableCell>{datas?.checkInDate}</TableCell>
+                                    <TableCell>{datas?.createdAt}</TableCell>
                                     <TableCell>{datas?.checkInTime}</TableCell>
                                     <TableCell>{datas?.checkOutDate}</TableCell>
                                     <TableCell>{datas?.checkOutTime}</TableCell>

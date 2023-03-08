@@ -1,7 +1,7 @@
-export const BaseUrl = "http://202.51.74.187:8002/";
+// export const BaseUrl = "http://202.51.74.187:8002/";
 // export const BaseUrl = "http://192.168.1.159:8002/";
 
-// export const BaseUrl = "http://192.168.1.73:8002/";
+export const BaseUrl = "http://localhost:8002/";
 
 export const adminLoginUrl = BaseUrl + "admin/auth/login";
 
@@ -30,3 +30,9 @@ export const visitorsFacilityCheckInCheckOut =
 export const visitorsReport = (skip: any, take: any) =>
   BaseUrl + `visitor/report?skip=${skip}&take=${take}`;
 export const singleVisitorReport = BaseUrl + "visitor/report-visitor?code=";
+
+//packages
+export const allPackages = BaseUrl + "package/all"
+export const savePackage = BaseUrl + "package/add"
+export const deletePackage = BaseUrl + "package/delete?id="
+export const updatePackage = BaseUrl + "package/update?id="
