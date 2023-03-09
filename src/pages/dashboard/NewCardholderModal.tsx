@@ -1,5 +1,5 @@
-import { Box, Button, Modal, Stack, TextField, Typography } from "@mui/material";
-import { useEffect, useContext } from "react";
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material";
+import { useEffect, useContext, useState } from "react";
 import styled from 'styled-components'
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from 'react-toastify';
 
 import { newVisitorSchema } from "../../utils/YupSchema";
-import { saveVisitors } from "../../http/endpoints/endpoints";
+import { allPackages, saveVisitors } from "../../http/endpoints/endpoints";
 import axios from "axios";
 import { customHeader } from "../../utils/token.utils";
 import { VisitorContext } from "../../contexts/VisitorContext";
@@ -45,10 +45,13 @@ const NewCardholderModal = ({ open, setOpen, }: { open: boolean, setOpen: (value
             email: '',
             name: '',
             clubName: '',
+            package: ''
         }
     });
 
-    const handleClose = () => { setOpen(false); }
+    const [packages, setPackages] = useState([]);
+
+    const handleClose = () => setOpen(false);
 
     const onSubmit: (data: any) => void = (data) => {
         axios.post(saveVisitors.toString(), data, { headers: customHeader() })
@@ -57,20 +60,25 @@ const NewCardholderModal = ({ open, setOpen, }: { open: boolean, setOpen: (value
                     visitorContext.getVisitorData();
                     toast.success('New Visitor Added');
                 }
-                else {
-                    toast.error(resp.data.message)
-                }
+                toast.error(resp.data.message)
             })
-            .catch((error) => {
-                toast.error(error.message);
-            })
+            .catch((error) => { toast.error(error.message); })
             .finally(() => {
                 handleClose();
                 reset();
             })
     }
 
+    const getPackages = async () => {
+        try {
+            const { data, error }: any = await axios.get(allPackages);
+            if (data && data.success) { setPackages(data.data); return; }
+            return;
+        } catch (error) { console.log(error) }
+    }
+
     useEffect(() => {
+        getPackages();
         reset();
     }, []);
 
@@ -85,6 +93,18 @@ const NewCardholderModal = ({ open, setOpen, }: { open: boolean, setOpen: (value
                         <PersonalForm register={register} control={control} errors={errors} />
                     </PersonalFormStyle>
                     <ContactForm register={register} control={control} errors={errors} />
+                    <FormControl sx={{ width: "48%", marginTop: 2 }} >
+                        <InputLabel id="demo-simple-select-label">Package</InputLabel>
+                        <Select
+                            id="package"
+                            {...register("package")}
+                            label="Packages"
+                        >
+                            {packages && packages.length > 0 && packages.map((item: any, index: number) => {
+                                return <MenuItem key={index} value={item._id}>{item.name}</MenuItem>
+                            })}
+                        </Select>
+                    </FormControl>
                     <Buttons handleClose={handleClose} />
                 </Box>
             </Modal>

@@ -39,6 +39,7 @@ const CardholderTable = ({ visitors, setModelOpen, modelOpen }: any) => {
                                 <TableCell >{visitor.contact}</TableCell>
                                 <TableCell align="left"><Barcode width={0.5} height={20} value={visitor.code} /></TableCell>
                                 <TableCell align='left'>{visitor.email}</TableCell>
+                                <TableCell >{visitor.package?.name}</TableCell>
                                 <TableCell >{visitor.clubName}</TableCell>
                                 <TableCell >{visitor.designation}</TableCell>
                                 <TableCell align='center'>
@@ -91,6 +92,7 @@ const TableHeader = () => {
                 <Typography>Email</Typography>
             </Stack>
         </TableCell>
+        <TableCell><Typography>Package</Typography></TableCell>
         <TableCell><Typography>Club Name</Typography></TableCell>
         <TableCell><Typography>Designation</Typography></TableCell>
         <TableCell><Typography>Action</Typography></TableCell>

@@ -1,11 +1,11 @@
-import { Button, FormLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Form } from 'react-router-dom';
-import { singleVisitorReport, visitorsReport } from '../../http/endpoints/endpoints';
-import { httpgetReport, httpGetVisitors } from '../../http/visitors';
+import { useEffect, useState } from 'react'
+import { singleVisitorReport } from '../../http/endpoints/endpoints';
+import { httpgetReport } from '../../http/visitors';
 import { customHeader } from '../../utils/token.utils';
+import moment from 'moment';
 
 export default function Report() {
 
@@ -76,9 +76,9 @@ export const Tablee = ({ report, singleReport }: any) => {
                 <TableHead>
                     <TableRow>
                         <TableCell>S.N</TableCell>
+                        <TableCell>CheckIn Date</TableCell>
                         <TableCell>Name</TableCell>
                         <TableCell>Code</TableCell>
-                        <TableCell>CheckIn Date</TableCell>
                         <TableCell>CheckIn Time</TableCell>
                         <TableCell>CheckOut Date</TableCell>
                         <TableCell>CheckOut Time</TableCell>
@@ -95,11 +95,11 @@ export const Tablee = ({ report, singleReport }: any) => {
                                     <TableCell component="th" scope="row">
                                         {index + 1}
                                     </TableCell>
+                                    <TableCell>{ moment(datas?.checkInDate).format("MMM Do YYYY")}</TableCell>
                                     <TableCell>{datas?.name}</TableCell>
                                     <TableCell>{datas?.code}</TableCell>
-                                    <TableCell>{datas?.createdAt}</TableCell>
                                     <TableCell>{datas?.checkInTime}</TableCell>
-                                    <TableCell>{datas?.checkOutDate}</TableCell>
+                                    <TableCell>{moment(datas?.checkOutDate).format("MMM Do YYYY")}</TableCell>
                                     <TableCell>{datas?.checkOutTime}</TableCell>
                                     <TableCell align='right'>{getAllFacilitiesUsed(datas?.facilities_used)}</TableCell>
                                 </TableRow>

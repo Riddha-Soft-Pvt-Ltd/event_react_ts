@@ -8,6 +8,7 @@ export const newVisitorSchema = Yup.object().shape({
     // .min(7, "Phone has to minimum 7 digits")
     // .max(10, "Phone number cannot exceed 10 characters"),
     designation: Yup.string().required('Enter your designation '),
-    clubName: Yup.string().required('Enter your club name ')
+    clubName: Yup.string().required('Enter your club name '),
+    package: Yup.string().required('Select package '),
    
 })

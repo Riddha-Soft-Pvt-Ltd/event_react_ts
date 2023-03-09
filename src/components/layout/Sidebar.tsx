@@ -105,10 +105,7 @@ const NavigationOptions = () => {
         if (location.pathname.substring(1) === "") {
             setPath("dashboard");
         } else {
-            // location.pathname.substring(1).split("/")[0]
-            // Accounts for sub directories of different main directories
             setPath(location.pathname.substring(1).split("/")[0]);
-            //setPath(location.pathname.substring(1));
         }
     }, [location]);
     return (
