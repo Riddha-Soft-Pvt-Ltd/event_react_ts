@@ -21,8 +21,6 @@ function App() {
     <AppContainer>
       <Routes>
         <Route path='/login' element={<Login />} />
-        <Route path='/vistor/checkin' element={<Check_In_Out />} />
-        <Route path='vistor/facility' element={<Facilities />} />
         <Route path='/*' element={<Layout />} />
       </Routes>
     </AppContainer>

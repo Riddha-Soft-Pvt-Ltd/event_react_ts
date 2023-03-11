@@ -59,14 +59,14 @@ const Facilities = () => {
             <MessageModal modelOpen={modelOpen} setmodelOpen={setmodelOpen} responseData={responseData} />
             <Grid container>
                 <GoBack />
-                <Grid item xs={12} sx={{ background: '#F4FAFF' }}>
-                    <Stack sx={{ height: '100vh' }} justifyContent='center' alignItems={'center'} spacing={4}>
-                        <Typography variant='body2' sx={{ fontWeight: 400, fontSize: '32px' }}>Check Facility</Typography>
-                        <Lottie style={{ width: '250px', height: '250px' }} animationData={Scanner} loop={true} />
+                <Grid item xs={12}>
+                    <Stack sx={{ height: '92vh' }} justifyContent='center' alignItems={'center'} spacing={4}>
+                        <Typography variant='body2' sx={{ fontWeight: 400, fontSize: '28px' }}>Check Facility</Typography>
+                        <Lottie style={{ width: '150px', height: '150px' }} animationData={Scanner} loop={true} />
                         {/* Dropdown component  */}
-                        <Typography variant={'h3'} textAlign={'center'}>Scan your Card </Typography>
+                        <Typography variant={'h6'} textAlign={'center'}>Scan your Card </Typography>
                         {loading ? <>loading</> : <Stack sx={{ width: '100%' }} spacing={2} justifyContent='center' alignItems={'center'}>
-                            <FormControl sx={{ width: '20%' }}>
+                            <FormControl sx={{ width: '30%' }}>
                                 <InputLabel id="check">Choose Facility</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -86,7 +86,7 @@ const Facilities = () => {
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') { facilityCheckIn(); }
                                 }}
-                                sx={{ width: '20%' }}
+                                sx={{ width: '30%' }}
                                 value={content}
                                 label='Scan your Card'
                                 autoFocus

@@ -3,30 +3,34 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { List, ListItemAvatar, Avatar, Button, Typography, Box } from "@mui/material";
 import Cookies from "universal-cookie";
 import styled from 'styled-components';
+
+import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 //Mui Icons
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import AodIcon from '@mui/icons-material/Aod';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 
 //Styled Component
 const StyledLink = styled(Link)`
     display: flex;
     align-items: center;
     gap: ${(props: any): string => props.small ? '5px' : '2px'};
-    padding:7px 0 7px 0;
+    padding:7px 0 0 4px;
     width: 100%;
     text-decoration: none;
-    background: ${(props: any): string => props.selected ? 'rgba(173, 231, 146,0.3)' : 'none'};
-    color:${(props: any): string => !props.selected ? 'gray' : 'black'};
+    color:${(props: any): string => !props.selected ? 'white' : 'white'};
     margin-top: 5px;
     border-radius: 5px;
     &:hover {
-        background: ${(props: any): string => props.selected ? 'rgb(173, 231, 146)' : (props.type === "bottom") ? 'rgba(173, 231, 146,0.3)' : 'rgba(173, 231, 146,0.3)'};
+        background: #c5bdbd;
     }
     &:active {
-        background: #BFBCBC;
+        background: #c5bdbd;
     }
 `;
 const StyledButton = styled(Button)`
@@ -39,19 +43,12 @@ const StyledButton = styled(Button)`
     margin-top: 5px !important;
     color: black !important;
     border-radius: 5px;
-    &:hover { background: #E5E5E5 !important; }
-    &:active { background: #BFBCBC; }
 `;
 
 const UserInfo = styled(Box)`
     width: 100%;
-    padding: 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border: 2px solid rgba(49, 80, 161, 0.2);
     display: flex;
     flex-direction: column;
-    gap: 10px;
 `;
 //Styled Component
 
@@ -67,25 +64,23 @@ const Sidebar = () => {
     return (
         <Box
             sx={{
+                background: "indigo",
+                opacity: 0.9,
                 padding: "40px 10px 5px 10px", display: "flex",
                 flexDirection: "column", gap: "20px",
                 minHeight: '100vh',
                 justifyContent: "space-between",
                 alignItems: "center"
             }}>
-            {/* Top Section */}
             <Box sx={{ display: "flex", width: "100%", flexDirection: "column", gap: "30px", alignItems: "center" }}>
-                {/*Heading*/}
                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px" }}>
                     {/* <img src='https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA' alt="locker" style={{ width: "30px", height: "30px" }} /> */}
                     <Typography variant="h5" component="h2">
-                        <Typography variant="h5" component="span" sx={{ color: "#3C2A21" }}>Visitors Management</Typography>
+                        <Typography variant="h5" component="span" sx={{ color: "white" }}>Admin</Typography>
                     </Typography>
                 </Box>
-                {/*Navigation Options*/}
                 <NavigationOptions />
             </Box>
-            {/*Bottom Section*/}
             <BottomSection />
         </Box>
     )
@@ -111,11 +106,11 @@ const NavigationOptions = () => {
     return (
         <List sx={{ width: "100%", padding: "0 10px", gap: "5px" }}>
             <CustomListItem link="visitors" path={path} icon={<DashboardIcon />} label="Visitors" />
-            <CustomListItem link="packages" path={path} icon={<PeopleAltIcon />} label="Packages" />
-            <CustomListItem link="facilities" path={path} icon={<PeopleAltIcon />} label="Facilties" />
-            <CustomListItem link="vistor/checkin" path={path} icon={<CheckCircleOutlineIcon />} label="CheckIn/CheckOut" />
-            <CustomListItem link="vistor/facility" path={path} icon={<AodIcon />} label="Check Facilities" />
-            <CustomListItem link="report" path={path} icon={<AodIcon />} label="Checkin Report" />
+            <CustomListItem link="packages" path={path} icon={<InventoryIcon />} label="Packages" />
+            <CustomListItem link="facilities" path={path} icon={<MiscellaneousServicesIcon />} label="Facilties" />
+            <CustomListItem link="vistor/checkin" path={path} icon={<MeetingRoomIcon />} label="Gate Check In/Out" />
+            <CustomListItem link="vistor/facility" path={path} icon={<SettingsSuggestIcon />} label="Facilities Check In" />
+            <CustomListItem link="report" path={path} icon={<AssessmentIcon />} label="Checkin Report" />
         </List>
     )
 }
@@ -130,19 +125,15 @@ const BottomSection = () => {
     const navigate = useNavigate();
     const handleOnLogout = () => {
         const cookie = new Cookies();
-        cookie.remove("isLoggedIn");
+        cookie.remove("eventSession");
         navigate("/login");
     }
     return (
-        <UserInfo>
-            <StyledLink to="/" type="bottom">
-                {/* <Avatar alt="Profile" src='https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA' sx={{ width: 46, height: 46, border: "2px solid rgba(0,0,0,0.7)" }} /> */}
-                <Typography component="span" sx={{ fontSize: '20px', paddingLeft: "15px" }}>Admin</Typography>
-            </StyledLink>
-            <Box sx={{ display: "flex", flexDirection: "column", width: "100%", marginBottom: '35px' }}>
+        <UserInfo sx={{ marginBottom: "15px" }}>
+            <Box sx={{ display: "flex", justifyContent: "center", itemsCenter: "center", marginBottom: '35px' }}>
                 <StyledButton onClick={handleOnLogout}>
-                    <LogoutIcon />
-                    <Typography component="span">Log out</Typography>
+                    <LogoutIcon sx={{ color: "white" }} />
+                    <Typography component="span" sx={{ color: "white" }}>Log out</Typography>
                 </StyledButton>
             </Box>
         </UserInfo>
@@ -162,7 +153,7 @@ const CustomListItem = ({ label, link, path, icon }: { label: string, link: stri
     return (
         <StyledLink to={`/${newLink}`} selected={path === link}>
             <ListItemAvatar>
-                <Avatar>
+                <Avatar sx={{ background: "none" }}>
                     {icon}
                 </Avatar>
             </ListItemAvatar>

@@ -12,7 +12,7 @@ export default function Report() {
     const [report, setreport] = useState([])
     const [visitor, setvisitor] = useState('')
     const [singleReport, setsingleReport] = useState([])
-    const [skipTake, setSkipTake] = useState({ skip: 0, take: 10 });
+    const [skipTake, setSkipTake] = useState({ skip: 0, take: 50 });
 
 
     const getReport = async () => {
@@ -47,9 +47,9 @@ export default function Report() {
 
     return (
         <Box>
-            <Typography variant="h5" >Report</Typography>
+            <Typography variant="h5" >Visitors Checkin Report</Typography>
             <Box sx={{ display: "flex", marginY: "3vh" }} >
-                <TextField sx={{ background: "white" }} onChange={(e) => setvisitor(e.target.value)} placeholder={"Search using code"}>sad</TextField>
+                <TextField sx={{ background: "white" }} onChange={(e) => setvisitor(e.target.value)} placeholder={"Search by user code"}>sad</TextField>
                 <Button variant="contained" onClick={getVisitorDetails}>Search</Button>
             </Box>
             <Tablee report={report} singleReport={singleReport} />
@@ -64,50 +64,65 @@ export const Tablee = ({ report, singleReport }: any) => {
     const Data = (singleReport && singleReport.length) ? singleReport : report;
 
     const getAllFacilitiesUsed = (facilityList: any) => {
-        const used = facilityList.map((facility: any) => <p><b>
-            {facility.facilityId.name.toUpperCase()} : {facility.checkInTime}
-        </b></p>);
-        return used;
+        const used: any[] = facilityList.map((facility: any) => facility.facilityId.map((item: any, index: number) =>
+            <p key={index}>
+                {item.name}
+            </p>));
+        let facilities = [...new Set(used)];
+        return facilities;
     }
+
+    const groupedByDate = Data.reduce((accumulator: any, currentValue: any) => {
+        const { checkInDate, ...rest } = currentValue;
+
+        if (!accumulator[moment(checkInDate).format("MMM Do YYYY")]) {
+            accumulator[moment(checkInDate).format("MMM Do YYYY")] = [];
+        }
+
+        accumulator[moment(checkInDate).format("MMM Do YYYY")].push(rest);
+        return accumulator;
+    }, {});
+
+    const groupedByDateWithKeys = Object.entries(groupedByDate).map(([key, value]) => ({ key, value }));
 
     return (
         <TableContainer sx={{ padding: "10px", background: "white" }}>
-            <Table sx={{ minWidth: 650, background: "white" }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>S.N</TableCell>
-                        <TableCell>CheckIn Date</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Code</TableCell>
-                        <TableCell>CheckIn Time</TableCell>
-                        <TableCell>CheckOut Date</TableCell>
-                        <TableCell>CheckOut Time</TableCell>
-                        <TableCell align='right'>Facilites Used </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        Data.map((datas: any, index: any) => {
-                            return (
-                                <TableRow
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {index + 1}
-                                    </TableCell>
-                                    <TableCell>{ moment(datas?.checkInDate).format("MMM Do YYYY")}</TableCell>
-                                    <TableCell>{datas?.name}</TableCell>
-                                    <TableCell>{datas?.code}</TableCell>
-                                    <TableCell>{datas?.checkInTime}</TableCell>
-                                    <TableCell>{moment(datas?.checkOutDate).format("MMM Do YYYY")}</TableCell>
-                                    <TableCell>{datas?.checkOutTime}</TableCell>
-                                    <TableCell align='right'>{getAllFacilitiesUsed(datas?.facilities_used)}</TableCell>
-                                </TableRow>
-                            )
-                        })
-                    }
-                </TableBody>
-            </Table>
-        </TableContainer>
+            {groupedByDateWithKeys.map((data: any, index: any) => {
+                return <>
+                    <Typography variant='h5' sx={{ paddingY: "15px" }}>Date: {data.key}</Typography>
+                    <Table>
+                        <TableHead >
+                            <TableRow sx={{ background: "#afafaf9c", color: "white" }}>
+                                <TableCell>S.N</TableCell>
+                                <TableCell>Name</TableCell>
+                                <TableCell>Code</TableCell>
+                                <TableCell>CheckIn Time</TableCell>
+                                <TableCell>CheckOut Time</TableCell>
+                                <TableCell align='left'>Facilites Used </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+                                data.value.map((datas: any, index: any) => {
+                                    console.log(datas.facilities_used)
+                                    return (
+                                        <TableRow sx={{ border: 0, }} >
+                                            <TableCell component="th" scope="row">
+                                                {index + 1}
+                                            </TableCell>
+                                            <TableCell sx={{ color: "gray", fontWeight: "bold" }}>{datas?.name}</TableCell>
+                                            <TableCell>{datas?.code}</TableCell>
+                                            <TableCell>{datas?.checkInTime}</TableCell>
+                                            <TableCell>{datas?.checkOutTime && moment(datas?.checkOutTime, 'HH:mm:ss').format('h:mm:ss a')}</TableCell>
+                                            <TableCell align='left'>{getAllFacilitiesUsed(datas?.facilities_used)}</TableCell>
+                                        </TableRow>
+                                    )
+                                })
+                            }
+                        </TableBody>
+                    </Table>
+                </>
+            })}
+        </TableContainer >
     )
 }

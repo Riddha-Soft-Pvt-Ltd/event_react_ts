@@ -10,15 +10,15 @@ const ContainerBox = styled(Box)`
     min-width: 1400px;
     min-height: 100vh; margin: 0px;
     position: relative;
-    background: #F4F4F5;
+    background: white;
 `;
 const SideBarContainer = styled(Box)`
     position: fixed;
     top: 0px;
     left: 0px;
     background: white;
-    min-width: 350px;
-    width: 350px;
+    min-width: 300px;
+    width: 300px;
     max-width: 350px;
     min-height: 100vh;
     z-index: 3;
@@ -37,10 +37,10 @@ const Layout = () => {
             <SideBarContainer>
                 <Sidebar />
             </SideBarContainer>
-            <Box sx={{ marginLeft: "355px", minHeight: "100vh", overflowX: "auto", marginRight: "5px" }}>
+            <Box sx={{ marginLeft: "305px", minHeight: "100vh", overflowX: "auto", marginRight: "5px" }}>
                 <Router />
             </Box>
-        </ContainerBox>
+        </ContainerBox >
     )
 }
 

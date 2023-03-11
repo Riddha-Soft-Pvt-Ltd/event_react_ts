@@ -8,6 +8,7 @@ import MessageModal from '../../components/Modal/MessageModal';
 //mui icons
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { httpVisitorFacilitiesCheckIn, httpVisitorFacilitiesCheckOut } from '../../http/checkInCheckOut';
+import Layout from '../../components/layout/Layout';
 
 const Check_In_Out = () => {
     const [value, setValue] = useState("1");
@@ -49,13 +50,12 @@ const Check_In_Out = () => {
         <>
             <MessageModal modelOpen={modelOpen} setmodelOpen={setmodelOpen} responseData={responseData} />
             <Grid container>
-                <GoBack />
-                <Grid item xs={12} sx={{ background: '#F4FAFF' }}>
-                    <Stack sx={{ height: '100vh' }} justifyContent='center' alignItems={'center'} spacing={4}>
-                        <Typography variant='body2' sx={{ fontWeight: 400, fontSize: '32px' }}> Visitiors Check In/Out</Typography>
-                        <Lottie style={{ width: '200px', height: '200px' }} animationData={Scanner} loop={true} />
+                <Grid item xs={12} sx={{ background: "white" }}>
+                    <Stack sx={{ height: '92vh' }} justifyContent='center' alignItems={'center'} spacing={4}>
+                        <Typography variant='body2' sx={{ fontWeight: 400, fontSize: '28px' }}> Visitiors Check In/Out</Typography>
+                        <Lottie style={{ width: '150px', height: '150px' }} animationData={Scanner} loop={true} />
                         {/* Dropdown component  */}
-                        <Typography variant={'h5'} textAlign={'center'}>Scan your Card</Typography>
+                        <Typography variant={'h6'} textAlign={'center'}>Scan your Card</Typography>
                         <FormControl sx={{ width: '30%' }}>
                             <InputLabel id="check">Check In/Out</InputLabel>
                             <Select

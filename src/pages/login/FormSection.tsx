@@ -1,34 +1,26 @@
-import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { AppContext } from '../../contexts/AppContext';
 
 import { Controller, useForm } from 'react-hook-form'
 import Cookies from 'universal-cookie'
 import axios from 'axios';
 import { adminLoginUrl } from '../../http/endpoints/endpoints';
 
-
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { toast } from 'react-toastify';
+import PeopleAlt from '@mui/icons-material/PeopleAlt';
 
 
 const theme = createTheme();
 
 export default function FormSection() {
-    const [value, setValue] = React.useState();
-
-    const appContext = React.useContext(AppContext);
-
     const navigate = useNavigate();
 
     const { register, control, handleSubmit, formState: { errors }, } = useForm();
@@ -41,7 +33,7 @@ export default function FormSection() {
             .then(function (response) {
                 if (response && response.data && response.data.success === true) {
                     const cookie = new Cookies();
-                    cookie.set("isLoggedIn", "true", { maxAge: 36000 }); // 60 minutes 3600s
+                    cookie.set("eventSession", "true", { maxAge: 36000 }); // 60 minutes 3600s
                     cookie.set('token', response.data.data.token)
                     toast.success('Login successfully')
                     navigate("/");
@@ -72,7 +64,7 @@ export default function FormSection() {
                     }}
                 >
                     <Avatar sx={{ bgcolor: 'error.main' }}>
-                        <LockOutlinedIcon />
+                        <PeopleAlt />
                     </Avatar>
                     <Typography component="h1" variant="h4">
                         Sign in

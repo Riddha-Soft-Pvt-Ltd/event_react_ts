@@ -5,8 +5,9 @@ import styled from 'styled-components';
 //mui icons
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { httpDeleteFacilities, httpGetFacilities, httpSaveFacilities,httpEditFacilities } from '../../http/facilities';
+import { httpDeleteFacilities, httpGetFacilities, httpSaveFacilities, httpEditFacilities } from '../../http/facilities';
 import { editFacilities, getFacilities } from '../../http/endpoints/endpoints';
+import Container from '@mui/material/Container';
 
 const BoxStyle = styled(Box)`
       display:flex;
@@ -22,8 +23,8 @@ const Facility = () => {
   const [loading, setLoading] = useState(false);
   const [textValue, setTextValue] = useState('');
   const [facilities, setFacilities] = useState([]);
-  const [isUpdate,setIsUpdate] = useState(false);
-  const [selectedFacility,setSelectedFacility]= useState({});
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [selectedFacility, setSelectedFacility] = useState({});
   // const [content , setContent] = useState('');
 
   const saveFacility = async () => {
@@ -43,8 +44,8 @@ const Facility = () => {
       await getFacilities();
     }
   }
-  const editFacilities = async (id: string,toUpdateData:string) => {
-    const success = await httpEditFacilities(id,{name:toUpdateData});
+  const editFacilities = async (id: string, toUpdateData: string) => {
+    const success = await httpEditFacilities(id, { name: toUpdateData });
     console.log(success)
     if (success) {
       await getFacilities();
@@ -55,7 +56,7 @@ const Facility = () => {
     const data = await httpGetFacilities();
     setFacilities(data);
   }
-  const updateHandle = (facility:any) => {
+  const updateHandle = (facility: any) => {
     setIsUpdate(true);
     setSelectedFacility(facility)
   }
@@ -80,7 +81,7 @@ const Facility = () => {
                   secondaryAction={
                     <>
                       <IconButton edge="start" aria-label="delete">
-                        <EditIcon onClick={()=>updateHandle(facility)} />
+                        <EditIcon onClick={() => updateHandle(facility)} />
                       </IconButton>
                       <IconButton onClick={() => { deleteFacility(facility._id) }} edge="end" aria-label="edit">
                         <DeleteIcon color='error' />
@@ -93,15 +94,15 @@ const Facility = () => {
             </List>
           </Grid>
           <Grid item xs={6}>
-            {isUpdate ? 
-            (<UpdateFacility isUpdate={isUpdate} setIsUpdate={setIsUpdate} toUpdateData={selectedFacility} editFacilities={editFacilities}/>) : 
-            <>
-              <Typography sx={{ margin: '10px 0 20px 15px', fontSize: '24px', textAlign: 'center' }}>Add Facility</Typography>
-              <Stack gap={5} justifyContent={'center'} alignItems={'center'}>
-                <TextField label='Enter new facility..' sx={{ width: '80%' }} value={textValue} onChange={(e) => setTextValue(e.target.value)} />
-                {loading ? <>loading</> : <Button variant='contained' color='secondary' sx={{ width: '40%' }} onClick={saveFacility} >Add Facility</Button>}
-              </Stack>
-            </>
+            {isUpdate ?
+              (<UpdateFacility isUpdate={isUpdate} setIsUpdate={setIsUpdate} toUpdateData={selectedFacility} editFacilities={editFacilities} />) :
+              <Box sx={{ paddingBottom: "1rem" }}>
+                <Typography sx={{ margin: '10px 0 20px 15px', fontSize: '24px', textAlign: 'center' }}>Add Facility</Typography>
+                <Stack gap={5} justifyContent={'center'} alignItems={'center'}>
+                  <TextField label='Enter new facility..' sx={{ width: '80%' }} value={textValue} onChange={(e) => setTextValue(e.target.value)} />
+                  {loading ? <>loading</> : <Button variant='contained' color='secondary' sx={{ width: '40%' }} onClick={saveFacility} >Add Facility</Button>}
+                </Stack>
+              </Box>
             }
           </Grid>
         </Grid>
@@ -113,30 +114,30 @@ const Facility = () => {
 export default Facility
 
 
-const UpdateFacility = ({isUpdate,setIsUpdate,toUpdateData,editFacilities}:{isUpdate:any,setIsUpdate:any,toUpdateData:any,editFacilities:any,}) => {
-  const [updatedData,setToUpdatedData] = useState(toUpdateData.name);
+const UpdateFacility = ({ isUpdate, setIsUpdate, toUpdateData, editFacilities }: { isUpdate: any, setIsUpdate: any, toUpdateData: any, editFacilities: any, }) => {
+  const [updatedData, setToUpdatedData] = useState(toUpdateData.name);
 
   const handleClick = () => {
     setIsUpdate(false);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     setToUpdatedData(toUpdateData.name);
-  },[toUpdateData])
-  
+  }, [toUpdateData])
+
   return (
     <>
       <Typography sx={{ margin: '10px 0 20px 15px', fontSize: '24px', textAlign: 'center' }}>Update Facility</Typography>
       <Stack gap={5} justifyContent={'center'} alignItems={'center'}>
-        <TextField multiline={true}  label='Enter new facility..' sx={{ width: '80%' }} value={updatedData} onChange={(e)=>{
+        <TextField multiline={true} label='Enter new facility..' sx={{ width: '80%' }} value={updatedData} onChange={(e) => {
           setToUpdatedData(e.target.value);
-        }}/>
-        <Stack direction='row' spacing={2} justifyContent='space-between' sx={{width:'70%'}}>
-          <Button variant='contained' color='secondary' onClick={() => { 
-            editFacilities(toUpdateData._id,updatedData);
+        }} />
+        <Stack direction='row' spacing={2} justifyContent='space-between' sx={{ width: '79%' }}>
+          <Button variant='contained' color='secondary' sx={{ width: "50%" }} onClick={() => {
+            editFacilities(toUpdateData._id, updatedData);
             setIsUpdate(false);
-            }} >Update</Button>
-          <Button variant='outlined' color='error' sx={{ width: '30%' }} onClick={handleClick} >Cancel</Button>
+          }} >Update</Button>
+          <Button variant='outlined' color='error' sx={{ width: '50%' }} onClick={handleClick} >Cancel</Button>
         </Stack>
       </Stack>
     </>

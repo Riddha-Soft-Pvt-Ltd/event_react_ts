@@ -12,7 +12,7 @@ export const VisitorContext = createContext<any>([]);
 
 const VisitorContextContainer = ({ children }: { children: any }) => {
     const [visitors, setVisitors] = useState<[]>([]);
-    const [skipTake, setSkipTake] = useState({ skip: 0, take: 10 });
+    const [skipTake, setSkipTake] = useState({ skip: 0, take: 35 });
     const [initialLoader, setInitialLoader] = useState(false);
 
     const [searchText, setSearchText] = useState("");
@@ -27,7 +27,7 @@ const VisitorContextContainer = ({ children }: { children: any }) => {
     }
 
     const loadMoreVisitors = async () => {
-        const skip = skipTake.skip + 10;
+        const skip = skipTake.skip + 20;
         setSkipTake({ ...skipTake, skip: skip });
         const visitorsData = await httpGetVisitors(skip, skipTake.take);
         console.log('ok')
@@ -37,7 +37,7 @@ const VisitorContextContainer = ({ children }: { children: any }) => {
     const getVisitorData = async () => {
         setInitialLoader(true);
         setSkipTake({ skip: 0, take: 10 });
-        const visitorsData = await httpGetVisitors(0, 10);
+        const visitorsData = await httpGetVisitors(0, 20);
         setVisitors(visitorsData);
         setInitialLoader(false);
     }
@@ -65,6 +65,7 @@ const VisitorContextContainer = ({ children }: { children: any }) => {
     }
 
     const updateVisitor = async (id: string, data: any) => {
+        console.log(data)
         await axios.post(editVisitors(id), data, { headers: customHeader() })
             .then((resp) => {
                 if (resp && resp.data && resp.data.success) {

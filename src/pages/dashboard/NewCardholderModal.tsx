@@ -37,14 +37,14 @@ margin-top:20px;
 `
 const NewCardholderModal = ({ open, setOpen, }: { open: boolean, setOpen: (value: boolean) => void }) => {
     const visitorContext = useContext(VisitorContext);
-    const { register, reset, control, handleSubmit, formState: { errors }, } = useForm({
+    const { register, reset, setValue, control, handleSubmit, formState: { errors }, } = useForm({
         resolver: yupResolver(newVisitorSchema),
         defaultValues: {
-            designation: '',
+            designation: 'N/A',
             contact: '',
             email: '',
             name: '',
-            clubName: '',
+            clubName: 'N/A',
             package: ''
         }
     });
@@ -59,8 +59,10 @@ const NewCardholderModal = ({ open, setOpen, }: { open: boolean, setOpen: (value
                 if (resp && resp.data && resp.data.success) {
                     visitorContext.getVisitorData();
                     toast.success('New Visitor Added');
+                } else {
+                    toast.error(resp.data.message)
                 }
-                toast.error(resp.data.message)
+
             })
             .catch((error) => { toast.error(error.message); })
             .finally(() => {
@@ -96,6 +98,7 @@ const NewCardholderModal = ({ open, setOpen, }: { open: boolean, setOpen: (value
                     <FormControl sx={{ width: "48%", marginTop: 2 }} >
                         <InputLabel id="demo-simple-select-label">Package</InputLabel>
                         <Select
+                            error={errors.package && Boolean(errors.package.message)}
                             id="package"
                             {...register("package")}
                             label="Packages"

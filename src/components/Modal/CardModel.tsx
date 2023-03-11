@@ -36,9 +36,8 @@ export default function CardModel({ modelOpen, setModelOpen, cardholders }: { mo
           <Box display={"flex"} flexDirection="column" gap={3} alignItems="center" justifyContent={"center"} padding="16px" >
             <Barcode height={80} width={1.2} value={cardholders.code} />
             <Box color="#AD1DEB" textAlign={"center"}>
-              <Typography variant="h6" fontWeight={"700"}>{cardholders.name}</Typography>
-              <Typography variant="body2" fontWeight={"600"} >{cardholders.designation}</Typography>
-              <Typography fontWeight={"500"} variant='subtitle2' marginTop={"5px"} >{cardholders.clubName}</Typography>
+              <Typography variant="h6" color={"black"} fontWeight={"700"}>{cardholders.name}</Typography>
+              <Typography variant="h4" color={"black"} fontWeight={"600"} >{cardholders.package?.name}</Typography>
             </Box>
           </Box>
         </Box>

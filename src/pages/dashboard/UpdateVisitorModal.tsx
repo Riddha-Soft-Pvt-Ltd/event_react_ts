@@ -2,16 +2,12 @@ import { Box, Button, Modal, Stack, TextField, Typography } from "@mui/material"
 import { useEffect } from "react";
 import styled from 'styled-components'
 import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-
-import { newVisitorSchema } from "../../utils/YupSchema";
 
 const UpdateVisitorModal = ({ updateVisitor, updateModal, setUpdateModal, cardholders }: { updateModal: boolean, setUpdateModal: (value: boolean) => void, cardholders: any, updateVisitor: any }) => {
 
     const handleClose = () => { setUpdateModal(false); }
 
-    const { register, reset, control, handleSubmit, formState: { errors }, } = useForm({
-        resolver: yupResolver(newVisitorSchema),
+    const { register, reset, getValues, control, handleSubmit, formState: { errors }, } = useForm({
         defaultValues: {
             designation: cardholders.designation,
             contact: cardholders.contact,
@@ -21,8 +17,8 @@ const UpdateVisitorModal = ({ updateVisitor, updateModal, setUpdateModal, cardho
         }
     });
 
-    const onSubmit: (data: any) => void = (data) => {
-        updateVisitor(cardholders._id, data);
+    const submit = (data: any) => {
+        updateVisitor(cardholders._id, getValues());
         handleClose();
     }
 
@@ -34,16 +30,20 @@ const UpdateVisitorModal = ({ updateVisitor, updateModal, setUpdateModal, cardho
         <>
             <Modal open={updateModal}
                 onClose={handleClose}>
-                <Box sx={style} component='form' onSubmit={handleSubmit(onSubmit)} >
-                    <Typography sx={{ fontWeight: 400, fontSize: '24px', lineHeight: '133.2%' }}>Update User</Typography>
-                    <PersonalFormStyle>
-                        <Typography sx={{ fontWeight: 500, fontSize: '20px' }}>Personal Information</Typography>
-                        <PersonalForm register={register} control={control} errors={errors} cardholders={cardholders} />
-                    </PersonalFormStyle>
-                    <ContactForm register={register} control={control} errors={errors} cardholders={cardholders} />
-                    <Buttons handleClose={handleClose} />
+                <Box sx={style}>
+                    <form>
+                        <Typography sx={{ fontWeight: 400, fontSize: '24px', lineHeight: '133.2%' }}>Update User</Typography>
+                        <PersonalFormStyle>
+                            <Typography sx={{ fontWeight: 500, fontSize: '20px' }}>Personal Information</Typography>
+                            <PersonalForm register={register} control={control} errors={errors} cardholders={cardholders} />
+                        </PersonalFormStyle>
+                        <ContactForm register={register} control={control} errors={errors} cardholders={cardholders} />
+                        <Stack direction={'row'} spacing={2} mt={4} justifyContent='flex-end' justifySelf={'flex-end'} width='100%' >
+                            <Button variant="outlined" color="error" onClick={handleClose} >Cancel</Button>
+                            <button type="button" onClick={submit} >Update</button>
+                        </Stack>
+                    </form>
                 </Box>
-
             </Modal>
         </>
     )
@@ -162,15 +162,7 @@ const ContactForm = ({ register, control, errors, cardholders }: { register: any
     )
 }
 
-export const Buttons = ({ handleClose }: { handleClose: () => void }) => {
 
-    return (
-        <Stack direction={'row'} spacing={2} mt={4} justifyContent='flex-end' justifySelf={'flex-end'} width='100%' >
-            <Button variant="outlined" color="error" onClick={handleClose} >Cancel</Button>
-            <Button type={'submit'} variant='contained' color="secondary" >Update</Button>
-        </Stack>
-    )
-}
 
 const style = {
     position: 'absolute' as 'absolute',
