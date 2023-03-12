@@ -8,7 +8,6 @@ import MessageModal from '../../components/Modal/MessageModal';
 //mui icons
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { httpVisitorFacilitiesCheckIn, httpVisitorFacilitiesCheckOut } from '../../http/checkInCheckOut';
-import Layout from '../../components/layout/Layout';
 
 const Check_In_Out = () => {
     const [value, setValue] = useState("1");

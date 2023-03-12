@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { List, ListItemAvatar, Avatar, Button, Typography, Box } from "@mui/material";
 import Cookies from "universal-cookie";
 import styled from 'styled-components';
-
+import PieChartIcon from '@mui/icons-material/PieChart';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 //Mui Icons
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -105,6 +105,7 @@ const NavigationOptions = () => {
     }, [location]);
     return (
         <List sx={{ width: "100%", padding: "0 10px", gap: "5px" }}>
+            {/* <CustomListItem link="dashboard" path={path} icon={<PieChartIcon />} label="Dashboard" /> */}
             <CustomListItem link="visitors" path={path} icon={<DashboardIcon />} label="Visitors" />
             <CustomListItem link="packages" path={path} icon={<InventoryIcon />} label="Packages" />
             <CustomListItem link="facilities" path={path} icon={<MiscellaneousServicesIcon />} label="Facilties" />

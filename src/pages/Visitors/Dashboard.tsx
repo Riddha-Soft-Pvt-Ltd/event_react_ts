@@ -18,7 +18,7 @@ const btnStyle = {
   alignItems: "center",
   justifyContent: "center"
 };
-const Dashboard = () => {
+const Visotors = () => {
   const [open, setOpen] = useState(false);
   const [modelOpen, setModelOpen] = useState(false);
 
@@ -106,7 +106,7 @@ const SearchBar = () => {
 }
 
 
-export default Dashboard;
+export default Visotors;
 
 const BoxStyle = styled(Box)`
       display:flex;

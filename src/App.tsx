@@ -6,9 +6,9 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import styled from 'styled-components'
 import Layout from './components/layout/Layout';
-import Check_In_Out from './pages/ClientSide/Check_In_Out';
-import Facilities from './pages/ClientSide/Facilities';
-import Login from './pages/login/Login';
+import Check_In_Out from './pages/CheckIns/Check_In_Out';
+import Facilities from './pages/CheckIns/Facilities';
+import Login from './pages/Login/Login';
 
 
 //styled component 
